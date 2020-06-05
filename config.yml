@@ -21,7 +21,7 @@ google_sheets:
   southeast:
     sheet_id: 1h-hbkHB6Fw80eHZPCaElKIbtCzqL4YrmDY8ye-t-WAA
     sheet_name: Research!
-    cols_row: 1
+    cols_row: 2
     data_start: 3
     col_mappings: 
       State: state
@@ -31,7 +31,7 @@ google_sheets:
       Victim Armed/Unarmed: armed_unarmed
       Cause of Death: cause_of_death
       Was Officer Charged?: officer_charged
-      Reason for Indident: alleged_crime
+      Reason for Incident: alleged_crime
       County: county
       Link_1: link_1
       Summary: summary
@@ -87,7 +87,7 @@ google_sheets:
       Alleged Crime: alleged_crime
       County: county
       Link_1: link_1
-      notes: summary
+      Summary: summary
   northwest: 
     sheet_id: 1NxNZ2hYkkz7JP1UIZMmMQU-1AGovPdRTE3PQttWapHE
     sheet_name: "Northwest- WA, OR, ID, AK, HI"
@@ -103,15 +103,15 @@ google_sheets:
       Cause of Death: cause_of_death
       Alleged Crime: alleged_crime
       County: county
-      Link_1: link_1
-      Link_2: link_2
-      Link_3: link_3
-      Link_4: link_4
+      Link 1: link_1
+      Link 2: link_2
+      Link 3: link_3
+      Link 4: link_4
       Summary: summary
   southwest: 
     sheet_id: 15lzxwVnkS-UjTWf3OCtSVNfy4ol5k-ToZkeKKOHGbqY
     sheet_name: "Southwest: CA, NV, AZ, UT"
-    cols_row: 1
+    cols_row: 2
     data_start: 3
     col_mappings:
       State: state

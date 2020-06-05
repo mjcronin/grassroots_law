@@ -1,3 +1,15 @@
+# CSV
+*.csv
+
+# git
+.git
+
+# Virtual environment
+venv*
+
+# Secrets
+credentials.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

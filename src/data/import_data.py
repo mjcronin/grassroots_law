@@ -51,47 +51,21 @@ def load_data():
 
         region_data[key] = data
 
-    return cols, data, region_data
+    return region_data
 
 
-
-# @st.cache
-# def check_cols():
-#     sheets = _cfg['google_sheets']
-
-#     # print(sheets)
-#     cols_check = []
-#     for key in sheets.keys():
-#         # print(key)
-#         sheet = sheets[key]['sheet_id']
-#         # print(sheet)
-#         cell_range = sheets[key]['sheet_name']
-#         cols_row = sheets[key]['cols_row']
-#         dat = gs_read(sheet, cell_range)
-#         cols =  dat[cols_row]
-#         n = 1
-#         for i,col in enumerate(cols):
-#             if col.lower().strip() == 'link':
-#                 cols[i] = cols[i].strip() + '_'+str(n)
-#                 n+=1
-#         cols_check.append(cols)
-
-#     # print(cols_check)
-
-#     return(cols_check)
 
 def main():
-    st.title('Grassroots Law Project Data Exploration')
-    cols, data, region_data = load_data()
+    
+    region_data = load_data()
 
-    # st.write(df_test.head())
-    # st.write(df_test.describe())
-        
-    # st.write(pd.DataFrame(data=cols_check))
+    for k in region_data.keys():
+        d = pd.DataFrame(region_data[k])
+        d.to_csv('../../data/raw/{}-2020-06-05.csv'.format(k))
 
-    return cols, data, region_data
+    
 
 
 if __name__ == '__main__':
-    cols, data, region_data = main()
+    main()
 
