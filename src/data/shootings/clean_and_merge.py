@@ -7,6 +7,19 @@ import numpy as np
 import pandas as pd
 from fuzzywuzzy import process
 
+# Load configuration file specifting data paths and filenames
+project_directory = 'grassroots_law'
+project_root = os.getcwd()\
+    .split(project_directory)[0]\
+    + project_directory + '/'
+_CONFIG_FILE = project_root + 'config.yml'
+with open(_CONFIG_FILE,'r') as f:
+        _cfg = yaml.safe_load(f)
+
+sys.path.append(project_root+'src/')
+
+from data.google_sheets import gs_write
+
 
 def load_states():
 # Load configuration file specifting data paths and filenames
@@ -111,7 +124,7 @@ def clean_states(df, states_dict):
             ] \
         for key in states_dict.keys()
     ]
-    print(long_short)
+
     df['state'] = list(map(correct_state, df['state'])) 
     df.insert(1, 'state_code', df['state'])
 
@@ -127,8 +140,14 @@ def main():
     states_dict = load_states()
     df = load_data()
     df = clean_states(df, states_dict)
-
-    df.to_csv('../../data/interim/killings_data_merged.csv')
+    
+    sheet_id = _cfg['merged_data']['sheet_id']
+    cell_range = _cfg['merged_data']['sheet_name']
+    data = [[str(m) for m in n] for n in df.to_numpy()]
+    data.insert(0, list(df.columns.values))
+    
+    gs_write(data, sheet_id, cell_range)
 
 if __name__ == '__main__':
-    main()
+    data = main()
+

@@ -1,3 +1,15 @@
+#import_data.py
+# Matthew J Cronin, 2020
+# matthew.j.cronin@gmail.com
+#
+"""
+Pull data from the Grassroots Law Project Police Shooting tracker
+
+Returns:
+    Regional CSV files saved to disk.
+"""
+
+
 import os
 import sys
 import logging
@@ -25,6 +37,14 @@ from data.google_sheets import gs_read
 
 @st.cache
 def load_data():
+    """
+    Pull data from the regional police shootings Google Sheets
+
+    Returns:
+        region_data [dict]: dictionary containing arrays of data pulled from
+        the Google Sheets API. Keys are region names as described in config.yml
+    """
+
     sheets = _cfg['google_sheets']
     region_data = {}
     for key in sheets.keys():
@@ -54,7 +74,6 @@ def load_data():
     return region_data
 
 
-
 def main():
     
     region_data = load_data()
@@ -62,8 +81,6 @@ def main():
     for k in region_data.keys():
         d = pd.DataFrame(region_data[k])
         d.to_csv('../../data/raw/{}-2020-06-05.csv'.format(k))
-
-    
 
 
 if __name__ == '__main__':

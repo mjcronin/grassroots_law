@@ -1,3 +1,8 @@
+# Merged data GS location
+merged_data:
+  sheet_id: 1ZpIbeSmXTZ41GLUeLmUAok_uajqlDpWMPr59KFfBVBc
+  sheet_name: shootings_data_merged
+
 # GOOGLE SHEET IDENTIFIERS
 google_sheets:
   northeast:
