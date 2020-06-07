@@ -9,14 +9,14 @@ from fuzzywuzzy import process
 
 # Load configuration file specifting data paths and filenames
 project_directory = 'grassroots_law'
-project_root = os.getcwd()\
+_project_root = os.getcwd()\
     .split(project_directory)[0]\
     + project_directory + '/'
-_CONFIG_FILE = project_root + 'config.yml'
+_CONFIG_FILE = _project_root + 'config.yml'
 with open(_CONFIG_FILE,'r') as f:
         _cfg = yaml.safe_load(f)
 
-sys.path.append(project_root+'src/')
+sys.path.append(_project_root+'src/')
 
 from data.google_sheets import gs_write
 
@@ -36,15 +36,15 @@ def load_states():
             {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
     """
     project_directory = 'grassroots_law'
-    project_root = os.getcwd()\
+    p_roject_root = os.getcwd()\
         .split(project_directory)[0]\
         + project_directory + '/'
     
-    STATES_FILE = project_root + 'states.yml'
+    STATES_FILE = _project_root + 'states.yml'
     with open(STATES_FILE,'r') as f:
             states_dict = yaml.safe_load(f)
 
-    COUNTIES_FILE = project_root + 'states_counties.yml'
+    COUNTIES_FILE = _project_root + 'states_counties.yml'
     with open(COUNTIES_FILE,'r') as f:
             counties_dict = yaml.safe_load(f)
 
@@ -72,7 +72,7 @@ def load_data():
                 Name:'link_1', dtype: object
                 Name:'summary' dtype: object
     """
-    files = os.listdir('../../data/raw')
+    files = os.listdir('{}/data/raw'.format(_project_root))
     # print(files)
     df = pd.DataFrame()
 
@@ -92,7 +92,7 @@ def load_data():
 
     for f in files:
         d = pd.read_csv(
-                    '../../data/raw/{}'.format(f),
+                    '{}/data/raw/{}'.format(_project_root, f),
                     header=1,
                     usecols=usecols
                     )
@@ -184,7 +184,7 @@ def clean_counties(df, counties_dict):
             (str): Correctly spelled and formatted
                                 county name.
         """
-        print(x)
+        # print(x) # Uncomment to debug keyerrors etc
         state = x[0]
         county = str(x[1]).strip().lower().capitalize()
         
@@ -194,11 +194,12 @@ def clean_counties(df, counties_dict):
             return '?' + county
 
         counties = counties_dict['state'][state]['counties']['county']
+
         match = process.extractOne(county, counties)
-        if match[1] > 0.75:
+        if match[1] < 75:
             return '?' + county
         else:
-            return match[0]
+            return match[0][:-7]
     
     state_county = [tuple(x) for x in df.loc[:,['state', 'county']].to_numpy()]
     df['county'] = list(map(correct_county, state_county))
