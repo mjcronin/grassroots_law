@@ -76,19 +76,7 @@ def load_data():
     # print(files)
     df = pd.DataFrame()
 
-    usecols = [
-        'state',
-        'date',
-        'victim_name',
-        'officer_name',
-        'armed_unarmed',
-        'cause_of_death',
-        'officer_charged',
-        'alleged_crime',
-        'county',
-        'link_1',
-        'summary'
-    ]
+    usecols = _cfg['usecols']
 
     for f in files:
         d = pd.read_csv(
@@ -102,6 +90,17 @@ def load_data():
                 d,
                 ignore_index=True
             )
+    # Drop duplicated 'summary' columns
+    
+    is_summary = list(map(lambda x: x=='summary', df.columns.values))
+    # print(df.columns.values)
+    # wait = input("PRESS ENTER TO CONTINUE.")
+    if np.sum(is_summary) > 1:
+        inds = [i for i,x in enumerate(n_summary) if x == True]
+        to_drop = inds[1:]
+        
+        df.drop(labels=to_drop, axis=1, inplace=True)
+
     return df
 
 
@@ -216,6 +215,11 @@ def main():
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     
+    # Reindex columns to desired order
+    writecols = _cfg['writecols']
+    df = df[writecols]
+    
+    # Write clean, merged data to Google Sheets
     sheet_id = _cfg['merged_data']['sheet_id']
     cell_range = _cfg['merged_data']['sheet_name']
     data = [[str(m) for m in n] for n in df.to_numpy()]
