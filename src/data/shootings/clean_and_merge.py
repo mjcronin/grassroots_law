@@ -1,8 +1,8 @@
 import os
 import sys
 import datetime as dt
-import yaml
 
+import yaml
 import numpy as np
 import pandas as pd
 from fuzzywuzzy import process
@@ -22,19 +22,56 @@ from data.google_sheets import gs_write
 
 
 def load_states():
-# Load configuration file specifting data paths and filenames
+    """
+    Load dicts mapping states to abbreviations and list of counties.
+
+    Load dicts mapping correctly spelled State names to abbreviated State
+    codes (e.g. California, CA; Tennessee, TN etc) and State names to County
+    names within each State.
+
+    Returns:
+        states_dict (dict): 
+            {'AK': {'name': 'Alaska', 'abbreviation': 'AK'}, ...}]
+        counties_dict (dict):
+            {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
+    """
     project_directory = 'grassroots_law'
     project_root = os.getcwd()\
         .split(project_directory)[0]\
         + project_directory + '/'
-    _STATES_FILE = project_root + 'states.yml'
-    with open(_STATES_FILE,'r') as f:
+    
+    STATES_FILE = project_root + 'states.yml'
+    with open(STATES_FILE,'r') as f:
             states_dict = yaml.safe_load(f)
-    return states_dict
+
+    COUNTIES_FILE = project_root + 'states_counties.yml'
+    with open(COUNTIES_FILE,'r') as f:
+            counties_dict = yaml.safe_load(f)
+
+    return states_dict, counties_dict
 
 
 def load_data():
+    """
+    Import regional police shootings CSVs from local directory
 
+    Returns:
+        df (pd.DataFrame): 
+            Index:
+                RangeIndex
+            Columns:
+                Name: 'state', dtype: object
+                Name:'date', dtype: object
+                Name:'victim_name', dtype: object
+                Name:'officer_name', dtype: object
+                Name:'armed_unarmed', dtype: object
+                Name:'cause_of_death', dtype: object
+                Name:'officer_charged', dtype: object
+                Name:'alleged_crime', dtype: object
+                Name:'county', dtype: object
+                Name:'link_1', dtype: object
+                Name:'summary' dtype: object
+    """
     files = os.listdir('../../data/raw')
     # print(files)
     df = pd.DataFrame()
@@ -67,15 +104,17 @@ def load_data():
             )
     return df
 
-# for col in usecols:
-#     if col == 'date':
-#         # dfcol] = pd.to_datetime(df[col])
-#         pass
-#     else:
-#        df[col] = df[col].astype(str)
 
 def clean_states(df, states_dict):
-    
+    """[summary]
+
+    Args:
+        df (pd.DataFrame): [description]
+        states_dict ([type]): [description]
+
+    Returns:
+        df ([])
+    """
     def return_long(x):
         for state in long_short:
             if x in state:
@@ -133,20 +172,56 @@ def clean_states(df, states_dict):
 
     return df
 
+
+def clean_counties(df, counties_dict):
+    
+    def correct_county(x):
+        """[summary]
+
+        Args:
+            x (tuple): (state_name (clean), county)
+        Returns:
+            (str): Correctly spelled and formatted
+                                county name.
+        """
+        print(x)
+        state = x[0]
+        county = str(x[1]).strip().lower().capitalize()
+        
+        if county == 'Nan':
+            return 'nan'
+        if state.lower() == 'nan':
+            return '?' + county
+
+        counties = counties_dict['state'][state]['counties']['county']
+        match = process.extractOne(county, counties)
+        if match[1] > 0.75:
+            return '?' + county
+        else:
+            return match[0]
+    
+    state_county = [tuple(x) for x in df.loc[:,['state', 'county']].to_numpy()]
+    df['county'] = list(map(correct_county, state_county))
+
+    return df
+
+
 def main():
     """
     [summary]
     """
-    states_dict = load_states()
+    states_dict, counties_dict = load_states()
     df = load_data()
     df = clean_states(df, states_dict)
+    df = clean_counties(df, counties_dict)
     
     sheet_id = _cfg['merged_data']['sheet_id']
     cell_range = _cfg['merged_data']['sheet_name']
     data = [[str(m) for m in n] for n in df.to_numpy()]
     data.insert(0, list(df.columns.values))
-    
+
     gs_write(data, sheet_id, cell_range)
+
 
 if __name__ == '__main__':
     data = main()

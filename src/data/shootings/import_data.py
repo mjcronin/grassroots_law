@@ -9,14 +9,13 @@ Returns:
     Regional CSV files saved to disk.
 """
 
-
 import os
 import sys
 import logging
 logging.getLogger(
     'googleapicliet.discovery_cache'
     ).setLevel(logging.ERROR)
-
+    
 import streamlit as st
 import yaml
 import numpy as np
