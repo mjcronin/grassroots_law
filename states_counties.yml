@@ -2383,7 +2383,7 @@ state:
         - Washington County
         - Wheeler County
         - Yamhill County
-  "Pennsylvania ": 
+  Pennsylvania: 
     abv: PA
     counties: 
       content: 
@@ -3363,4 +3363,21 @@ state:
         - Uinta County
         - Washakie County
         - Weston County
-updated: 2007-10-17
+  American Samoa:
+    abv: AS
+    counties:
+      county:
+        - Ituau County
+        - Ma'Oputasi County
+        - Sa'Ole County
+        - Sua County
+        - Vaifauna County
+        - Lealataua County
+        - Leasina County
+        - Tualtai County
+        - Tualauta County
+        - Faleasao County
+        - Ofu County
+        - Olosega County
+        - Ta'u County
+updated: "2020-06-07"
