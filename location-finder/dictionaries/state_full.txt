@@ -1,0 +1,61 @@
+0,puerto rico
+2,illinois
+3,hawaii
+4,us armed forces europe
+5,kentucky
+6,new mexico
+7,oregon
+8,virginia
+9,massachusetts
+10,louisiana
+11,arizona
+12,ohio
+13,texas
+14,marshall islands
+15,iowa
+16,utah
+17,rhode island
+18,palau
+19,montana
+20,south carolina
+21,connecticut
+22,us armed forces pacific
+23,arkansas
+24,vermont
+25,nebraska
+26,california
+27,new hampshire
+28,kansas
+29,pennsylvania
+30,wisconsin
+31,"washington, d.c."
+32,virgin islands
+33,south dakota
+34,wyoming
+35,west virginia
+36,minnesota
+37,american samoa
+38,federated states of micronesia
+39,maryland
+40,guam
+41,new jersey
+42,alabama
+43,nevada
+44,mississippi
+45,michigan
+46,idaho
+47,northern mariana islands
+48,north dakota
+49,maine
+50,north carolina
+51,missouri
+52,tennessee
+53,alaska
+54,washington
+55,georgia
+56,oklahoma
+57,colorado
+58,new york
+59,indiana
+60,delaware
+61,florida

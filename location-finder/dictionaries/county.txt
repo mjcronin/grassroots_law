@@ -1,0 +1,1931 @@
+1,dillingham
+2,mariposa
+3,spink
+4,calhoun
+5,kingsbury
+6,carter
+7,nemaha
+8,lyman
+9,island
+10,latah
+11,kearny
+12,renville
+13,caribou
+14,mason
+15,chattahoochee
+16,galveston
+17,tyler
+18,saluda
+19,culpeper
+20,sarasota
+21,shannon
+22,southampton
+23,pinal
+24,boyd
+25,greene
+26,carson
+27,teller
+28,san sebastian
+29,tyrrell
+30,colfax
+31,ferry
+32,kootenai
+33,mcnairy
+34,webster
+35,searcy
+36,sequatchie
+37,douglas
+38,macomb
+39,reeves
+40,presidio
+41,saint lucie
+42,stevens
+43,wagoner
+44,larimer
+45,houston
+46,cuyahoga
+47,shackelford
+48,edmunds
+49,big horn
+50,brunswick
+51,denton
+52,citrus
+53,grand
+54,elkhart
+55,garvin
+56,carver
+57,iron
+58,edwards
+59,wasatch
+60,erie
+61,yankton
+62,brooke
+63,hunt
+64,faribault
+65,marquette
+66,olmsted
+67,hinsdale
+68,meriwether
+69,cole
+70,shenandoah
+71,crook
+72,williams
+73,oakland
+74,forest
+75,barnes
+76,hempstead
+77,suffolk city
+78,san mateo
+79,tift
+80,palm beach
+81,guayanilla
+82,sierra
+83,saint francis
+84,gurabo
+85,labette
+86,barranquitas
+87,massac
+88,bureau
+89,sedgwick
+90,oceana
+91,craig
+92,wythe
+93,bexar
+94,benewah
+95,cotton
+96,clermont
+97,wyandotte
+98,stephenson
+99,alexander
+100,marin
+101,porter
+102,colquitt
+103,multnomah
+104,churchill
+105,jefferson
+106,montcalm
+107,howell
+108,trimble
+109,acadia
+110,mills
+111,broward
+112,roosevelt
+113,west baton rouge
+114,winona
+115,graves
+116,clayton
+117,geauga
+118,utuado
+119,karnes
+120,ringgold
+121,whitley
+122,republic
+123,independence
+124,briscoe
+125,canovanas
+126,union
+127,anson
+128,moca
+129,des moines
+130,charleston
+131,stark
+132,charlevoix
+133,champaign
+134,donley
+135,stearns
+136,anderson
+137,kalamazoo
+138,spencer
+139,rappahannock
+140,tate
+141,lebanon
+142,frio
+143,gillespie
+144,sharkey
+145,hardeman
+146,allen
+147,estill
+148,glascock
+149,toombs
+150,upton
+151,san saba
+152,archer
+153,wolfe
+154,jones
+155,craven
+156,custer
+157,caldwell
+158,dane
+159,kankakee
+160,aitkin
+161,beaverhead
+162,santa cruz
+163,danville city
+164,sunflower
+165,solano
+166,sawyer
+167,dakota
+168,frontier
+169,ector
+170,covington city
+171,payette
+172,lamoure
+173,lagrange
+174,anoka
+175,pittsburg
+176,aguas buenas
+177,wakulla
+178,tom green
+179,corozal
+180,hot springs
+181,audrain
+182,archuleta
+183,lexington
+184,yukon koyukuk
+185,hutchinson
+186,weston
+187,sangamon
+188,emmons
+189,alcona
+190,davidson
+191,sebastian
+192,gordon
+193,collingsworth
+194,charlottesville city
+195,hot spring
+196,camas
+197,codington
+198,dolores
+199,autauga
+200,hayes
+201,gilmer
+202,preston
+203,tunica
+204,matanuska susitna
+205,dickson
+206,chariton
+207,aguadilla
+208,runnels
+209,dawes
+210,charles
+211,kenosha
+212,luce
+213,saint mary
+214,steele
+215,taos
+216,allegheny
+217,manassas city
+218,bingham
+219,gaston
+220,bremer
+221,collier
+222,hampshire
+223,banner
+224,burleson
+225,hemphill
+226,robertson
+227,petersburg city
+228,mille lacs
+229,bertie
+230,passaic
+231,stafford
+232,hanover
+233,crenshaw
+234,troup
+235,sandoval
+236,iredell
+237,benton
+238,cowley
+239,norton
+240,imperial
+241,worcester
+242,swisher
+243,st joseph
+244,rosebud
+245,woodward
+246,kanawha
+247,benson
+248,mcdonough
+249,nez perce
+250,garland
+251,stutsman
+252,nodaway
+253,ozaukee
+254,cayey
+255,martinsville city
+256,sublette
+257,carbon
+258,brookings
+259,blaine
+260,washita
+261,grayson
+262,cannon
+263,davis
+264,mccone
+265,poinsett
+266,virginia beach city
+267,galax city
+268,elmore
+269,hall
+270,nome
+271,lajas
+272,fall river
+273,cass
+274,providence
+275,barren
+276,giles
+277,rush
+278,aleutians west
+279,cavalier
+280,lamoille
+281,san miguel
+282,jenkins
+283,hawaii
+284,gallatin
+285,swain
+286,dent
+287,glades
+288,elbert
+289,marion
+290,gallia
+291,prince of wales hyder
+292,ozark
+293,elko
+294,will
+295,king
+296,shelby
+297,greensville
+298,manassas park city
+299,dekalb
+300,bell
+301,osceola
+302,eagle
+303,fallon
+304,van zandt
+305,falls church city
+306,geary
+307,jerauld
+308,paulding
+309,posey
+310,kimble
+311,harding
+312,rolette
+313,wibaux
+314,charlotte
+315,habersham
+316,coke
+317,san diego
+318,rowan
+319,tensas
+320,winston
+321,mccracken
+322,gage
+323,sherman
+324,concordia
+325,bristol
+326,cecil
+327,rio grande
+328,strafford
+329,essex
+330,grand traverse
+331,lorain
+332,kingfisher
+333,hampton
+334,shawano
+335,cobb
+336,minnehaha
+337,hocking
+338,cabell
+339,gratiot
+340,pamlico
+341,sargent
+342,berkshire
+343,niagara
+344,fentress
+345,deschutes
+346,eau claire
+347,amador
+348,martin
+349,laurens
+350,emanuel
+351,hopkins
+352,hood river
+353,muskingum
+354,ontario
+355,palo alto
+356,hyde
+357,gentry
+358,okfuskee
+359,st john the baptist
+360,haywood
+361,durham
+362,erath
+363,miner
+364,beaufort
+365,nobles
+366,suffolk
+367,saint louis
+368,tulsa
+369,prince georges
+370,humacao
+371,vilas
+372,juana diaz
+373,mingo
+374,milam
+375,glynn
+376,gilpin
+377,prowers
+378,wells
+379,yuba
+380,highlands
+381,asotin
+382,buena vista city
+383,cleburne
+384,colonial heights city
+385,moffat
+386,anasco
+387,loudon
+388,corson
+389,cape girardeau
+390,james city
+391,patillas
+392,callahan
+393,hartford
+394,itasca
+395,dearborn
+396,lumpkin
+397,coryell
+398,faulkner
+399,king george
+400,caguas
+401,queens
+402,nacogdoches
+403,nassau
+404,atlantic
+405,leon
+406,quitman
+407,dixie
+408,mobile
+409,childress
+410,red river
+411,rains
+412,hancock
+413,gregg
+414,newport news city
+415,westchester
+416,garrard
+417,owsley
+418,barron
+419,escambia
+420,alger
+421,kenton
+422,wise
+423,oswego
+424,rio arriba
+425,haralson
+426,shasta
+427,cimarron
+428,jack
+429,ingham
+430,wabaunsee
+431,suwannee
+432,bowman
+433,bradford
+434,arthur
+435,waldo
+436,mountrail
+437,appanoose
+438,jasper
+439,stone
+440,sabana grande
+441,bullitt
+442,covington
+443,ogemaw
+444,fulton
+445,butts
+446,seward
+447,kittson
+448,whiteside
+449,pipestone
+450,hillsborough
+451,merrimack
+452,clinch
+453,lauderdale
+454,obrien
+455,saint bernard
+456,panola
+457,san german
+458,screven
+459,haakon
+460,quay
+461,moore
+462,perkins
+463,racine
+464,bowie
+465,haskell
+466,ballard
+467,portage
+468,graham
+469,clallam
+470,hopewell city
+471,carroll
+472,mississippi
+473,burlington
+474,hooker
+475,tolland
+476,columbia
+477,travis
+478,winchester city
+479,bienville
+480,san augustine
+481,craighead
+482,crosby
+483,huron
+484,coweta
+485,appling
+486,brazos
+487,cumberland
+488,southeast fairbanks
+489,woodbury
+490,iowa
+491,saint johns
+492,saginaw
+493,latimer
+494,oxford
+495,contra costa
+496,henry
+497,denali
+498,mcculloch
+499,montmorency
+500,new castle
+501,telfair
+502,pleasants
+503,east carroll
+504,northampton
+505,nowata
+506,hennepin
+507,keith
+508,emery
+509,watauga
+510,crockett
+511,atascosa
+512,grafton
+513,hockley
+514,cambria
+515,hardin
+516,buncombe
+517,zavala
+518,shoshone
+519,calcasieu
+520,mckenzie
+521,ellis
+522,geneva
+523,skagway
+524,staunton city
+525,ashtabula
+526,powder river
+527,cottle
+528,manati
+529,christian
+530,routt
+531,vega baja
+532,washtenaw
+533,socorro
+534,washington
+535,glacier
+536,navajo
+537,itawamba
+538,collin
+539,maury
+540,sacramento
+541,edgefield
+542,assumption
+543,marlboro
+544,lapeer
+545,peoria
+546,pontotoc
+547,san jacinto
+548,early
+549,yabucoa
+550,district of columbia
+551,maries
+552,snohomish
+553,spalding
+554,dougherty
+555,walker
+556,johnson
+557,chesapeake city
+558,gunnison
+559,lewis
+560,lares
+561,dade
+562,lipscomb
+563,pocahontas
+564,otoe
+565,loudoun
+566,noble
+567,montezuma
+568,snyder
+569,kandiyohi
+570,butte
+571,lamar
+572,mcintosh
+573,tulare
+574,burke
+575,meade
+576,arroyo
+577,saint charles
+578,culebra
+579,caswell
+580,baltimore
+581,brewster
+582,utah
+583,clearwater
+584,scotland
+585,pierce
+586,guernsey
+587,bryan
+588,taney
+589,davison
+590,unicoi
+591,copiah
+592,parker
+593,duval
+594,jessamine
+595,alleghany
+596,nicholas
+597,hernando
+598,garfield
+599,nevada
+600,kerr
+601,chatham
+602,prince edward
+603,rawlins
+604,curry
+605,ashley
+606,leslie
+607,dyer
+608,vega alta
+609,trinity
+610,banks
+611,pettis
+612,duplin
+613,northern mariana islands
+614,gove
+615,rockwall
+616,cherokee
+617,park
+618,lucas
+619,bannock
+620,comanche
+621,scotts bluff
+622,clarion
+623,hidalgo
+624,ripley
+625,woodson
+626,palau
+627,gaines
+628,chicot
+629,pasco
+630,jay
+631,wilkin
+632,brooks
+633,davie
+634,bee
+635,ward
+636,nance
+637,alpine
+638,mecklenburg
+639,rutherford
+640,navarro
+641,pike
+642,williamsburg city
+643,brown
+644,mackinac
+645,tillman
+646,natrona
+647,fairfield
+648,taliaferro
+649,lassen
+650,tucker
+651,shawnee
+652,victoria
+653,clinton
+654,esmeralda
+655,sully
+656,morrill
+657,antrim
+658,garza
+659,carlton
+660,catano
+661,mcdonald
+662,dimmit
+663,hart
+664,titus
+665,mendocino
+666,van wert
+667,burt
+668,ralls
+669,cerro gordo
+670,sanpete
+671,houghton
+672,lemhi
+673,brevard
+674,eureka
+675,leflore
+676,fergus
+677,north slope
+678,towns
+679,greenville
+680,caledonia
+681,otero
+682,marinette
+683,volusia
+684,placer
+685,de witt
+686,milwaukee
+687,aransas
+688,somervell
+689,merced
+690,allegany
+691,rockland
+692,harvey
+693,irwin
+694,mclennan
+695,wilcox
+696,goodhue
+697,chouteau
+698,kidder
+699,dixon
+700,camp
+701,whitfield
+702,arapahoe
+703,leake
+704,gates
+705,la crosse
+706,saint landry
+707,rutland
+708,rensselaer
+709,orange
+710,camuy
+711,blount
+712,nicollet
+713,ochiltree
+714,lowndes
+715,cidra
+716,harrisonburg city
+717,decatur
+718,tippecanoe
+719,mower
+720,jim wells
+721,larue
+722,roanoke city
+723,presque isle
+724,hamlin
+725,hoke
+726,carlisle
+727,sioux
+728,santa clara
+729,okeechobee
+730,knox
+731,kanabec
+732,okaloosa
+733,stanley
+734,stonewall
+735,toole
+736,dupage
+737,harmon
+738,dinwiddie
+739,sauk
+740,nolan
+741,deaf smith
+742,divide
+743,dunn
+744,el paso
+745,burnett
+746,saunders
+747,vigo
+748,ketchikan gateway
+749,allegan
+750,freeborn
+751,moody
+752,richmond
+753,canadian
+754,gonzales
+755,lubbock
+756,brule
+757,baraga
+758,cowlitz
+759,murray
+760,colbert
+761,bronx
+762,terrebonne
+763,noxubee
+764,brazoria
+765,valdez cordova
+766,waupaca
+767,sussex
+768,gregory
+769,pinellas
+770,inyo
+771,culberson
+772,santa rosa
+773,arecibo
+774,breckinridge
+775,le sueur
+776,power
+777,maricao
+778,newaygo
+779,gilliam
+780,columbus
+781,jersey
+782,bamberg
+783,talladega
+784,sutter
+785,ogle
+786,buena vista
+787,plaquemines
+788,faulk
+789,cabarrus
+790,riverside
+791,sonoma
+792,yellow medicine
+793,dickens
+794,harnett
+795,pitkin
+796,blackford
+797,moniteau
+798,winn
+799,young
+800,robeson
+801,sweet grass
+802,alamosa
+803,powell
+804,lac qui parle
+805,winneshiek
+806,saint thomas
+807,hudspeth
+808,bosque
+809,salem
+810,mineral
+811,west carroll
+812,hamblen
+813,mora
+814,lanier
+815,llano
+816,saint joseph
+817,daniels
+818,piute
+819,cheshire
+820,jewell
+821,laurel
+822,montrose
+823,la plata
+824,petroleum
+825,prince george
+826,hood
+827,kearney
+828,koochiching
+829,san bernardino
+830,skagit
+831,grady
+832,chenango
+833,sutton
+834,walworth
+835,nantucket
+836,gadsden
+837,mayaguez
+838,mclean
+839,hoonah angoon
+840,chickasaw
+841,dickenson
+842,schenectady
+843,vinton
+844,federated states of micro
+845,waushara
+846,wyoming
+847,barnwell
+848,marshall islands
+849,anchorage
+850,mccreary
+851,petersburg
+852,ransom
+853,clackamas
+854,kennebec
+855,mellette
+856,juneau
+857,chisago
+858,naguabo
+859,stanislaus
+860,sainte genevieve
+861,jackson
+862,wyandot
+863,yolo
+864,granville
+865,clay
+866,cascade
+867,grundy
+868,dauphin
+869,las piedras
+870,cattaraugus
+871,owen
+872,camden
+873,okanogan
+874,hatillo
+875,albemarle
+876,wadena
+877,menifee
+878,highland
+879,pemiscot
+880,venango
+881,roane
+882,monmouth
+883,mcpherson
+884,gladwin
+885,alcorn
+886,ouachita
+887,baltimore city
+888,silver bow
+889,saint croix
+890,de baca
+891,red willow
+892,kauai
+893,williamsburg
+894,bristol city
+895,naranjito
+896,finney
+897,clearfield
+898,bristol bay
+899,golden valley
+900,potter
+901,bacon
+902,minidoka
+903,beauregard
+904,surry
+905,letcher
+906,attala
+907,treasure
+908,walla walla
+909,clarendon
+910,tioga
+911,summers
+912,lane
+913,morehouse
+914,coffee
+915,beltrami
+916,pennington
+917,branch
+918,rabun
+919,trumbull
+920,pueblo
+921,conejos
+922,yamhill
+923,aroostook
+924,ceiba
+925,gray
+926,hand
+927,levy
+928,wrangell
+929,hitchcock
+930,jennings
+931,reynolds
+932,lampasas
+933,montour
+934,vermillion
+935,lexington city
+936,cibola
+937,roger mills
+938,niobrara
+939,forrest
+940,amherst
+941,frederick
+942,foard
+943,white
+944,osborne
+945,limestone
+946,bulloch
+947,georgetown
+948,fountain
+949,kittitas
+950,uintah
+951,beckham
+952,king and queen
+953,metcalfe
+954,bandera
+955,canyon
+956,dallas
+957,duchesne
+958,newport
+959,mckinley
+960,ulster
+961,tuolumne
+962,fairbanks north star
+963,kemper
+964,muscogee
+965,weber
+966,bolivar
+967,gila
+968,lake
+969,luzerne
+970,cape may
+971,dewey
+972,stoddard
+973,iberville
+974,coles
+975,calvert
+976,henderson
+977,holt
+978,adjuntas
+979,luquillo
+980,lackawanna
+981,waukesha
+982,east baton rouge
+983,box elder
+984,de kalb
+985,boyle
+986,luna
+987,twiggs
+988,onondaga
+989,walton
+990,crittenden
+991,lynn
+992,dunklin
+993,black hawk
+994,linn
+995,saline
+996,siskiyou
+997,lenawee
+998,isle of wight
+999,drew
+1000,ramsey
+1001,broadwater
+1002,kane
+1003,columbiana
+1004,boulder
+1005,polk
+1006,hendry
+1007,philadelphia
+1008,teton
+1009,wood
+1010,coconino
+1011,hodgeman
+1012,genesee
+1013,mcdowell
+1014,dillon
+1015,louisa
+1016,malheur
+1017,pushmataha
+1018,dorchester
+1019,greenbrier
+1020,horry
+1021,austin
+1022,miami-dade
+1023,avoyelles
+1024,josephine
+1025,treutlen
+1026,carteret
+1027,stephens
+1028,kenedy
+1029,cache
+1030,tallahatchie
+1031,broome
+1032,major
+1033,zapata
+1034,rapides
+1035,mercer
+1036,natchitoches
+1037,oregon
+1038,turner
+1039,brantley
+1040,wahkiakum
+1041,nuckolls
+1042,logan
+1043,evangeline
+1044,willacy
+1045,queen annes
+1046,fajardo
+1047,butler
+1048,augusta
+1049,trego
+1050,cameron
+1051,webb
+1052,pine
+1053,schuylkill
+1054,glenn
+1055,susquehanna
+1056,fleming
+1057,mcleod
+1058,muskegon
+1059,patrick
+1060,monterey
+1061,neosho
+1062,whitman
+1063,woods
+1064,herkimer
+1065,cook
+1066,bent
+1067,casey
+1068,johnston
+1069,pondera
+1070,izard
+1071,otsego
+1072,goshen
+1073,schuyler
+1074,arlington
+1075,aibonito
+1076,traill
+1077,cross
+1078,bennett
+1079,pasquotank
+1080,san benito
+1081,maverick
+1082,indian river
+1083,buchanan
+1084,middlesex
+1085,storey
+1086,bartholomew
+1087,saint louis city
+1088,evans
+1089,juniata
+1090,addison
+1091,pitt
+1092,pointe coupee
+1093,rankin
+1094,lincoln
+1095,waseca
+1096,lavaca
+1097,botetourt
+1098,reagan
+1099,sanders
+1100,boundary
+1101,new york
+1102,kendall
+1103,hendricks
+1104,chemung
+1105,pickett
+1106,page
+1107,schoolcraft
+1108,schleicher
+1109,judith basin
+1110,boise
+1111,bledsoe
+1112,lunenburg
+1113,hardee
+1114,traverse
+1115,charles mix
+1116,edgar
+1117,hampden
+1118,schley
+1119,kewaunee
+1120,creek
+1121,wichita
+1122,menard
+1123,mahnomen
+1124,bonner
+1125,cheatham
+1126,tuscarawas
+1127,jerome
+1128,plymouth
+1129,midland
+1130,wicomico
+1131,greeley
+1132,red lake
+1133,swift
+1134,green
+1135,manatee
+1136,palo pinto
+1137,live oak
+1138,warren
+1139,effingham
+1140,yates
+1141,monongalia
+1142,denver
+1143,oklahoma
+1144,rhea
+1145,worth
+1146,waynesboro city
+1147,bland
+1148,flathead
+1149,pawnee
+1150,chase
+1151,gogebic
+1152,roanoke
+1153,lake of the woods
+1154,mcminn
+1155,alexandria city
+1156,guanica
+1157,salinas
+1158,sterling
+1159,elk
+1160,sagadahoc
+1161,hale
+1162,grand isle
+1163,hertford
+1164,yuma
+1165,morgan
+1166,somerset
+1167,saint martin
+1168,stillwater
+1169,wilkes
+1170,valencia
+1171,perquimans
+1172,transylvania
+1173,grenada
+1174,kosciusko
+1175,day
+1176,hill
+1177,yancey
+1178,shiawassee
+1179,goliad
+1180,slope
+1181,sanborn
+1182,mccook
+1183,redwood
+1184,lafourche
+1185,aguada
+1186,garden
+1187,wilkinson
+1188,blair
+1189,radford
+1190,franklin
+1191,trigg
+1192,harlan
+1193,cheyenne
+1194,dundy
+1195,alameda
+1196,sandusky
+1197,williamson
+1198,sitka
+1199,hudson
+1200,russell
+1201,wetzel
+1202,humboldt
+1203,scurry
+1204,lake and peninsula
+1205,boone
+1206,bladen
+1207,ben hill
+1208,cheboygan
+1209,gwinnett
+1210,payne
+1211,tompkins
+1212,cooke
+1213,vernon
+1214,cedar
+1215,ashe
+1216,gooding
+1217,richland
+1218,bennington
+1219,saint clair
+1220,merrick
+1221,ada
+1222,knott
+1223,bartow
+1224,atchison
+1225,lander
+1226,fond du lac
+1227,langlade
+1228,ionia
+1229,pendleton
+1230,alachua
+1231,starke
+1232,cochran
+1233,new madrid
+1234,grant
+1235,roberts
+1236,ocean
+1237,foster
+1238,nelson
+1239,guthrie
+1240,washburn
+1241,darlington
+1242,new kent
+1243,sheridan
+1244,putnam
+1245,comerio
+1246,liberty
+1247,wirt
+1248,morrison
+1249,yazoo
+1250,henrico
+1251,daviess
+1252,millard
+1253,rockingham
+1254,jefferson davis
+1255,mohave
+1256,newton
+1257,doniphan
+1258,barton
+1259,tripp
+1260,seneca
+1261,coamo
+1262,macon
+1263,terry
+1264,smyth
+1265,wayne
+1266,doddridge
+1267,madera
+1268,dallam
+1269,washakie
+1270,dawson
+1271,raleigh
+1272,trempealeau
+1273,costilla
+1274,walthall
+1275,eddy
+1276,aleutians east
+1277,kings
+1278,breathitt
+1279,monroe
+1280,lawrence
+1281,chelan
+1282,auglaize
+1283,belmont
+1284,rich
+1285,manitowoc
+1286,bethel
+1287,hampton city
+1288,spartanburg
+1289,bedford
+1290,todd
+1291,marshall
+1292,sampson
+1293,san lorenzo
+1294,bates
+1295,pottawattamie
+1296,cochise
+1297,hawkins
+1298,ellsworth
+1299,freestone
+1300,la paz
+1301,pend oreille
+1302,choctaw
+1303,bourbon
+1304,white pine
+1305,terrell
+1306,talbot
+1307,bayfield
+1308,colleton
+1309,tarrant
+1310,rockdale
+1311,cabo rojo
+1312,barnstable
+1313,guadalupe
+1314,tipton
+1315,grand forks
+1316,thurston
+1317,hansford
+1318,pershing
+1319,windsor
+1320,delaware
+1321,clare
+1322,issaquena
+1323,wright
+1324,candler
+1325,garrett
+1326,mecosta
+1327,belknap
+1328,seminole
+1329,saint helena
+1330,towner
+1331,humphreys
+1332,cottonwood
+1333,price
+1334,madison
+1335,bayamon
+1336,woodruff
+1337,vermilion
+1338,monona
+1339,cayuga
+1340,vance
+1341,tattnall
+1342,lyon
+1343,ness
+1344,rio blanco
+1345,crow wing
+1346,salt lake
+1347,obion
+1348,oconto
+1349,isanti
+1350,hickory
+1351,morris
+1352,cortland
+1353,winkler
+1354,missoula
+1355,nash
+1356,king william
+1357,keweenaw
+1358,muscatine
+1359,hardy
+1360,florence
+1361,conecuh
+1362,hickman
+1363,tama
+1364,trujillo alto
+1365,hays
+1366,bath
+1367,macoupin
+1368,hillsdale
+1369,flagler
+1370,guam
+1371,las marias
+1372,new london
+1373,powhatan
+1374,clarke
+1375,catawba
+1376,rincon
+1377,simpson
+1378,pulaski
+1379,sharp
+1380,rock island
+1381,halifax
+1382,delta
+1383,las animas
+1384,steuben
+1385,saint john
+1386,audubon
+1387,northwest arctic
+1388,alamance
+1389,pratt
+1390,hartley
+1391,griggs
+1392,wallowa
+1393,sequoyah
+1394,yellowstone
+1395,dooly
+1396,albany
+1397,george
+1398,blue earth
+1399,barber
+1400,kershaw
+1401,prince william
+1402,cocke
+1403,deuel
+1404,rockcastle
+1405,randolph
+1406,saint francois
+1407,emmet
+1408,fredericksburg city
+1409,bleckley
+1410,randall
+1411,lehigh
+1412,norton city
+1413,andrews
+1414,kenai peninsula
+1415,jeff davis
+1416,livingston
+1417,stokes
+1418,mathews
+1419,kalkaska
+1420,chippewa
+1421,okmulgee
+1422,weld
+1423,kimball
+1424,richmond city
+1425,barry
+1426,tishomingo
+1427,hinds
+1428,san francisco
+1429,peach
+1430,bracken
+1431,dona ana
+1432,rock
+1433,le flore
+1434,chattooga
+1435,arenac
+1436,ritchie
+1437,sibley
+1438,cuming
+1439,crisp
+1440,starr
+1441,bear lake
+1442,ross
+1443,outagamie
+1444,la salle
+1445,desoto
+1446,neshoba
+1447,meigs
+1448,warrick
+1449,aiken
+1450,overton
+1451,piatt
+1452,rogers
+1453,mcclain
+1454,miami
+1455,upson
+1456,richardson
+1457,beadle
+1458,los angeles
+1459,scott
+1460,scioto
+1461,fisher
+1462,real
+1463,medina
+1464,armstrong
+1465,campbell
+1466,kiowa
+1467,irion
+1468,waller
+1469,yavapai
+1470,woodford
+1471,ontonagon
+1472,baca
+1473,hunterdon
+1474,fairfax city
+1475,sabine
+1476,carson city
+1477,cassia
+1478,fremont
+1479,hughes
+1480,wheatland
+1481,plumas
+1482,juncos
+1483,charles city
+1484,northumberland
+1485,yoakum
+1486,billings
+1487,anne arundel
+1488,loiza
+1489,spokane
+1490,bonneville
+1491,pickaway
+1492,dubuque
+1493,tangipahoa
+1494,ziebach
+1495,san juan
+1496,gibson
+1497,bay
+1498,bradley
+1499,door
+1500,magoffin
+1501,howard
+1502,accomack
+1503,portsmouth city
+1504,guaynabo
+1505,orocovis
+1506,grainger
+1507,muhlenberg
+1508,little river
+1509,lafayette
+1510,modoc
+1511,uvalde
+1512,sarpy
+1513,dutchess
+1514,calaveras
+1515,piscataquis
+1516,kingman
+1517,roseau
+1518,yalobusha
+1519,rice
+1520,catron
+1521,angelina
+1522,baldwin
+1523,american samoa
+1524,ida
+1525,wapello
+1526,adams
+1527,clear creek
+1528,prairie
+1529,clatsop
+1530,androscoggin
+1531,becker
+1532,hettinger
+1533,ascension
+1534,dickey
+1535,chowan
+1536,new hanover
+1537,lynchburg city
+1538,iroquois
+1539,montgomery
+1540,oldham
+1541,la porte
+1542,el dorado
+1543,caddo
+1544,wilbarger
+1545,barbour
+1546,oliver
+1547,taylor
+1548,andrew
+1549,uinta
+1550,twin falls
+1551,gloucester
+1552,hamilton
+1553,mahoning
+1554,centre
+1555,indiana
+1556,kent
+1557,prentiss
+1558,coshocton
+1559,bollinger
+1560,coleman
+1561,wade hampton
+1562,harford
+1563,stanly
+1564,licking
+1565,person
+1566,reno
+1567,yadkin
+1568,gosper
+1569,switzerland
+1570,jayuya
+1571,fluvanna
+1572,coffey
+1573,carolina
+1574,hormigueros
+1575,bossier
+1576,loup
+1577,desha
+1578,falls
+1579,mcduffie
+1580,roscommon
+1581,oktibbeha
+1582,nueces
+1583,pickens
+1584,texas
+1585,gem
+1586,vieques
+1587,huntington
+1588,tehama
+1589,vanderburgh
+1590,mono
+1591,ponce
+1592,tuscola
+1593,callaway
+1594,onslow
+1595,leelanau
+1596,burleigh
+1597,sumter
+1598,baker
+1599,isabela
+1600,sweetwater
+1601,maricopa
+1602,mchenry
+1603,bibb
+1604,parmer
+1605,apache
+1606,converse
+1607,loving
+1608,lea
+1609,trousdale
+1610,calloway
+1611,smith
+1612,iosco
+1613,walsh
+1614,crane
+1615,iberia
+1616,ohio
+1617,greer
+1618,missaukee
+1619,norfolk city
+1620,pembina
+1621,comal
+1622,eastland
+1623,leavenworth
+1624,crowley
+1625,caroline
+1626,lycoming
+1627,stewart
+1628,benzie
+1629,menominee
+1630,harrison
+1631,york
+1632,preble
+1633,matagorda
+1634,schoharie
+1635,pender
+1636,morton
+1637,chaves
+1638,appomattox
+1639,ottawa
+1640,laramie
+1641,ford
+1642,thomas
+1643,wheeler
+1644,coahoma
+1645,conway
+1646,crawford
+1647,floyd
+1648,isabella
+1649,chesterfield
+1650,phillips
+1651,litchfield
+1652,lancaster
+1653,wilson
+1654,dorado
+1655,yakutat
+1656,wharton
+1657,saint james
+1658,parke
+1659,san patricio
+1660,berkeley
+1661,oconee
+1662,fauquier
+1663,colusa
+1664,coosa
+1665,wake
+1666,sevier
+1667,ventura
+1668,cleveland
+1669,rusk
+1670,pope
+1671,bottineau
+1672,heard
+1673,new haven
+1674,saint marys
+1675,cloud
+1676,alfalfa
+1677,orleans
+1678,riley
+1679,yauco
+1680,bailey
+1681,santa isabel
+1682,otter tail
+1683,meeker
+1684,napa
+1685,pearl river
+1686,quebradillas
+1687,maui
+1688,villalba
+1689,westmoreland
+1690,gulf
+1691,haines
+1692,echols
+1693,greenup
+1694,dickinson
+1695,claiborne
+1696,chautauqua
+1697,musselshell
+1698,fort bend
+1699,tazewell
+1700,windham
+1701,ashland
+1702,fresno
+1703,yell
+1704,mckean
+1705,mcmullen
+1706,newberry
+1707,chambers
+1708,ware
+1709,guayama
+1710,bastrop
+1711,florida
+1712,toa baja
+1713,sanilac
+1714,san joaquin
+1715,dukes
+1716,morovis
+1717,hanson
+1718,pepin
+1719,buckingham
+1720,lamb
+1721,box butte
+1722,honolulu
+1723,berrien
+1724,broomfield
+1725,antelope
+1726,catoosa
+1727,klickitat
+1728,edgecombe
+1729,muskogee
+1730,glasscock
+1731,harper
+1732,lee
+1733,sullivan
+1734,osage
+1735,castro
+1736,eaton
+1737,saint tammany
+1738,borden
+1739,juab
+1740,montague
+1741,jo daviess
+1742,sumner
+1743,mesa
+1744,miller
+1745,gilchrist
+1746,san luis obispo
+1747,huerfano
+1748,kitsap
+1749,val verde
+1750,etowah
+1751,los alamos
+1752,furnas
+1753,tippah
+1754,mayes
+1755,toa alta
+1756,morrow
+1757,abbeville
+1758,deer lodge
+1759,bucks
+1760,bon homme
+1761,poquoson city
+1762,keya paha
+1763,del norte
+1764,pittsylvania
+1765,bergen
+1766,granite
+1767,coal
+1768,darke
+1769,marengo
+1770,santa barbara
+1771,lonoke
+1772,guilford
+1773,stanton
+1774,east feliciana
+1775,poweshiek
+1776,thayer
+1777,winnebago
+1778,phelps
+1779,grimes
+1780,aurora
+1781,idaho
+1782,atkinson
+1783,nye
+1784,bullock
+1785,pecos
+1786,blanco
+1787,currituck
+1788,defiance
+1789,kaufman
+1790,love
+1791,valley
+1792,barrow
+1793,fillmore
+1794,chittenden
+1795,lewis and clark
+1796,cullman
+1797,clark
+1798,athens
+1799,greenlee
+1800,sherburne
+1801,adair
+1802,saratoga
+1803,baylor
+1804,tillamook
+1805,spotsylvania
+1806,norfolk
+1807,upshur
+1808,wabash
+1809,platte
+1810,colorado
+1811,kit carson
+1812,tooele
+1813,mifflin
+1814,allendale
+1815,allamakee
+1816,wallace
+1817,penobscot
+1818,ciales
+1819,kay
+1820,barceloneta
+1821,perry
+1822,van buren
+1823,cherry
+1824,harris
+1825,kleberg
+1826,moultrie
+1827,dare
+1828,washoe
+1829,dewitt
+1830,charlton
+1831,bernalillo
+1832,mccurtain
+1833,holmes
+1834,franklin city
+1835,maunabo
+1836,greenwood
+1837,watonwan
+1838,big stone
+1839,amite
+1840,braxton
+1841,ravalli
+1842,rooks
+1843,oglethorpe
+1844,kern
+1845,ray
+1846,calumet
+1847,wasco
+1848,weakley
+1849,fannin
+1850,keokuk
+1851,fayette
+1852,mahaska
+1853,fairfax
+1854,whatcom
+1855,oneida
+1856,kinney
+1857,dale
+1858,berks
+1859,coos
+1860,goochland
+1861,atoka
+1862,cooper
+1863,lenoir
+1864,sac
+1865,wexford
+1866,refugio
+1867,norman
+1868,kodiak island
+1869,long
+1870,edmonson
+1871,oscoda
+1872,catahoula
+1873,orangeburg
+1874,saint lawrence
+1875,motley
+1876,umatilla
+1877,west feliciana
+1878,green lake
+1879,baxter
+1880,burnet
+1881,owyhee
+1882,yakima
+1883,pima
+1884,summit
+1885,chilton
+1886,amelia
+1887,kossuth
+1888,arkansas
+1889,dubois
+1890,gasconade
+1891,beaver
+1892,daggett
+1893,throckmorton
+1894,chaffee
+1895,bond
+1896,laclede
+1897,mccormick
+1898,pacific
+1899,de soto
+1900,marathon
+1901,buffalo
+1902,forsyth
+1903,grays harbor
+1904,tallapoosa
+1905,elliott
+1906,rockbridge
+1907,nottoway
+1908,santa fe
+1909,ouray
+1910,hubbard
+1911,story
+1912,skamania
+1913,dodge
+1914,mitchell
+1915,meagher
+1916,avery
+1917,chester
+1918,manistee
+1919,sheboygan
+1920,torrance
+1921,penuelas
+1922,saguache
+1923,harney
+1924,concho
+1925,tuscaloosa
+1926,pottawatomie
+1927,huntingdon
+1928,wabasha
+1929,jim hogg
+1930,alpena
+1931,klamath
