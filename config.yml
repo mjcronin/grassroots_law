@@ -23,7 +23,7 @@ writecols:
   - cause_of_death
   - officer_charged
   - alleged_crime
-  - link_1
+  - links
   - summary
 # Merged data GS location
 merged_data:
