@@ -51,6 +51,36 @@ def load_states():
     return states_dict, counties_dict
 
 
+def load_states():
+    """
+    Load dicts mapping states to abbreviations and list of counties.
+
+    Load dicts mapping correctly spelled State names to abbreviated State
+    codes (e.g. California, CA; Tennessee, TN etc) and State names to County
+    names within each State.
+
+    Returns:
+        states_dict (dict): 
+            {'AK': {'name': 'Alaska', 'abbreviation': 'AK'}, ...}]
+        counties_dict (dict):
+            {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
+    """
+    project_directory = 'grassroots_law'
+    p_roject_root = os.getcwd()\
+        .split(project_directory)[0]\
+        + project_directory + '/'
+    
+    STATES_FILE = _project_root + 'states.yml'
+    with open(STATES_FILE,'r') as f:
+            states_dict = yaml.safe_load(f)
+
+    COUNTIES_FILE = _project_root + 'states_counties.yml'
+    with open(COUNTIES_FILE,'r') as f:
+            counties_dict = yaml.safe_load(f)
+
+    return states_dict, counties_dict
+
+
 def load_data():
     """
     Import regional police shootings CSVs from local directory
@@ -69,7 +99,7 @@ def load_data():
                 Name:'officer_charged', dtype: object
                 Name:'alleged_crime', dtype: object
                 Name:'county', dtype: object
-                Name:'link_1', dtype: object
+                Name:'links', dtype: object
                 Name:'summary' dtype: object
     """
     files = os.listdir('{}/data/raw'.format(_project_root))
@@ -82,7 +112,6 @@ def load_data():
         d = pd.read_csv(
                     '{}/data/raw/{}'.format(_project_root, f),
                     header=1,
-                    usecols=usecols
                     )
         # print(d.columns)
         # print(d.shape)
@@ -100,6 +129,17 @@ def load_data():
         to_drop = inds[1:]
         
         df.drop(labels=to_drop, axis=1, inplace=True)
+    to_drop = [n for n in df.columns.values if 'Unnamed' in n]
+    df.drop(labels=to_drop, axis=1, inplace=True) 
+    
+    link_cols = [col for col in df.columns.values if 'link' in col]
+    links = df[link_cols]
+    links_merged = links.apply(
+        lambda x: ' '.join([str(n) for n in x.values if str(n)!='nan']),
+        axis=1
+        )
+    df['links'] = links_merged
+    df.drop(labels=link_cols, axis=1, inplace=True)
 
     return df
 
@@ -206,6 +246,18 @@ def clean_counties(df, counties_dict):
     return df
 
 
+def dates_to_datetime(df):
+    """
+    Convert type of date values to np.datetime64
+    """
+    def dt_or_nat(x):
+        try:
+            x = pd.to_datetime(x)
+            return x
+        except:
+            return np.datetime64('NaT')
+
+
 def main():
     """
     [summary]
@@ -218,6 +270,11 @@ def main():
     # Reindex columns to desired order
     writecols = _cfg['writecols']
     df = df[writecols]
+
+    # Order dataframe by state/date
+
+    # df['date'] = list(map(pd.to_datetime, df['date']))
+    df.sort_values(by=['state','date','county'], inplace=True)
     
     # Write clean, merged data to Google Sheets
     sheet_id = _cfg['merged_data']['sheet_id']
@@ -225,7 +282,9 @@ def main():
     data = [[str(m) for m in n] for n in df.to_numpy()]
     data.insert(0, list(df.columns.values))
 
-    gs_write(data, sheet_id, cell_range)
+    # gs_write(data, sheet_id, cell_range)
+
+    return df
 
 
 if __name__ == '__main__':
