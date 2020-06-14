@@ -10,8 +10,12 @@ from fuzzywuzzy import process
 from newspaper import Article
 import spacy
 import en_core_web_sm
-import streamlit as st
+
+#
 # Load configuration file specifting data paths and filenames
+#
+# This assumes that the user is working in a Unix-like environment and
+# infers the project root.
 project_directory = 'grassroots_law'
 _project_root = os.getcwd()\
     .split(project_directory)[0]\
@@ -76,8 +80,8 @@ def load_data():
                 Name:'links', dtype: object
                 Name:'summary' dtype: object
     """
+    
     files = os.listdir('{}/data/raw'.format(_project_root))
-    # print(files)
     df = pd.DataFrame()
 
     usecols = _cfg['usecols']
@@ -87,25 +91,28 @@ def load_data():
                     '{}/data/raw/{}'.format(_project_root, f),
                     header=1,
                     )
-        # print(d.columns)
-        # print(d.shape)
         df = df.append(
                 d,
                 ignore_index=True
             )
     # Drop duplicated 'summary' columns
-    
     is_summary = list(map(lambda x: x=='summary', df.columns.values))
-    # print(df.columns.values)
-    # wait = input("PRESS ENTER TO CONTINUE.")
     if np.sum(is_summary) > 1:
         inds = [i for i,x in enumerate(n_summary) if x == True]
         to_drop = inds[1:]
-        
         df.drop(labels=to_drop, axis=1, inplace=True)
+
+    # Drop columns loaded as 'Unnamed'
+    # 
+    # As the structure of the regionalGoogle sheets varies, the API pull used 
+    # to read the data did not precisely specify the range of cells to read as 
+    # this is challenging when using A1 notation and ambiguous ranges. As a 
+    # consequence, some empty columns are downloaded.
     to_drop = [n for n in df.columns.values if 'Unnamed' in n]
     df.drop(labels=to_drop, axis=1, inplace=True) 
     
+    # Where there are multiple link columns, merge into one column of URLs 
+    # joined with whitespace ' '
     link_cols = [col for col in df.columns.values if 'link' in col]
     links = df[link_cols]
     links_merged = links.apply(
@@ -113,34 +120,41 @@ def load_data():
         axis=1
         )
     df['links'] = links_merged
+
+    # Drop redundant link columns
     df.drop(labels=link_cols, axis=1, inplace=True)
 
     return df
 
 
 def clean_states(df, states_dict):
-    """[summary]
-
+    """
+    Use fuzzy string matching to map state entries to standard long-form and 
+    abbreviated state names.
+    
     Args:
-        df (pd.DataFrame): [description]
-        states_dict ([type]): [description]
+        df (pd.DataFrame): Merged data from the police shootings page
+        
+        states_dict (dict): dictionary mapping abbreviated state names to 
+        long-form state names and abbreviated state names.
+        e.g.: state_dict['AK'] = {'name': 'Alaska', 'abbreviation': 'AK'}
 
     Returns:
-        df ([])
+        df (pd.DataFrame): Updated version of input df with 'state' and 
+        'state_code' columns containing the long-form and abbreviated state 
+        name.
     """
-    def return_long(x):
-        for state in long_short:
-            if x in state:
-                return state[0]
-        return 'nan'
-
-    def return_short(x):
-        for state in long_short:
-            if x in state:
-                return state[1]
-        return 'nan'
-
     def correct_state(x):
+        """
+        Return standardized long-form or abbreviated state name depending on 
+        input
+
+        Args:
+            x (str): State name from raw data
+
+        Returns:
+            str: Closest matching state name or abbreviation (fuzzy match)
+        """
         x=str(x).capitalize()
         
         if x.lower() == 'nan':
@@ -167,6 +181,46 @@ def clean_states(df, states_dict):
                     return match[0]
                 else:
                     return '?' + x
+
+
+    def return_long(x):
+        """
+        Return long-form state name. As data were entered variously in 
+        long-form or abbreviated form by different users, the corrected state 
+        list is a mix of forms.
+
+        Args:
+            x (str): Corrected state name or abbreviation
+
+        Returns:
+            str: Long form state name, or 'nan' if state could not be 
+            identified
+        """
+        for state in long_short:
+            if x in state:
+                return state[0]
+        return 'nan'
+
+
+    def return_short(x):
+        """
+        Return abbreviated state name. As data were entered variously in 
+        long-form or abbreviated form by different users, the corrected state 
+        list is a mix of forms.
+
+        Args:
+            x (str): Corrected state name or abbreviation
+
+        Returns:
+            str: Abbreviated state name, or 'nan' if state could not be 
+            identified
+        """
+        for state in long_short:
+            if x in state:
+                return state[1]
+        return 'nan'
+
+    
     states_long = [
         states_dict[key]['name'] for key in states_dict.keys()
         ]
@@ -191,19 +245,22 @@ def clean_states(df, states_dict):
 
     return df
 
-# @st.cache
+
 def clean_counties(df, counties_dict):
     
     def correct_county(x):
-        """[summary]
+        """
+        Return fuzzy-matched county name from dict of counties within a state,
+        or prepent county with '?' if ambiguous.
 
         Args:
-            x (tuple): (state_name (clean), county)
+            x (tuple): (state_name (clean, long form), county)
+        
         Returns:
-            (str): Correctly spelled and formatted
-                                county name.
+            (str): Correctly spelled and formatted county name, or input 
+            prepended with '?' if ambiguous
         """
-        # print(x) # Uncomment to debug keyerrors etc
+        
         state = x[0]
         county = str(x[1]).strip().lower().capitalize()
         
@@ -218,7 +275,7 @@ def clean_counties(df, counties_dict):
         if match[1] < 75:
             return '?' + county
         else:
-            return match[0][:-7]
+            return match[0][:-7] # Do not include the word 'county'
     
     state_county = [tuple(x) for x in df.loc[:,['state', 'county']].to_numpy()]
     df['county'] = list(map(correct_county, state_county))
@@ -278,7 +335,7 @@ def scrape_links(df):
 
 def main():
     """
-    [summary]
+    Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
     states_dict, counties_dict = load_states()
     df = load_data()
@@ -291,7 +348,6 @@ def main():
     df = df[writecols]
 
     # Order dataframe by state/date
-
     # df['date'] = list(map(pd.to_datetime, df['date']))
     df.sort_values(by=['state','date','county'], inplace=True)
     
@@ -307,5 +363,5 @@ def main():
 
 
 if __name__ == '__main__':
-    data = main()
+    data = main() # Return clean data for local debugging.
 
