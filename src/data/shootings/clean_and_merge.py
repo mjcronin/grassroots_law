@@ -2,11 +2,15 @@ import os
 import sys
 import datetime as dt
 
+import requests as re
 import yaml
 import numpy as np
 import pandas as pd
 from fuzzywuzzy import process
-
+from newspaper import Article
+import spacy
+import en_core_web_sm
+import streamlit as st
 # Load configuration file specifting data paths and filenames
 project_directory = 'grassroots_law'
 _project_root = os.getcwd()\
@@ -19,36 +23,6 @@ with open(_CONFIG_FILE,'r') as f:
 sys.path.append(_project_root+'src/')
 
 from data.google_sheets import gs_write
-
-
-def load_states():
-    """
-    Load dicts mapping states to abbreviations and list of counties.
-
-    Load dicts mapping correctly spelled State names to abbreviated State
-    codes (e.g. California, CA; Tennessee, TN etc) and State names to County
-    names within each State.
-
-    Returns:
-        states_dict (dict): 
-            {'AK': {'name': 'Alaska', 'abbreviation': 'AK'}, ...}]
-        counties_dict (dict):
-            {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
-    """
-    project_directory = 'grassroots_law'
-    p_roject_root = os.getcwd()\
-        .split(project_directory)[0]\
-        + project_directory + '/'
-    
-    STATES_FILE = _project_root + 'states.yml'
-    with open(STATES_FILE,'r') as f:
-            states_dict = yaml.safe_load(f)
-
-    COUNTIES_FILE = _project_root + 'states_counties.yml'
-    with open(COUNTIES_FILE,'r') as f:
-            counties_dict = yaml.safe_load(f)
-
-    return states_dict, counties_dict
 
 
 def load_states():
@@ -175,18 +149,24 @@ def clean_states(df, states_dict):
         if x == '':
             return x
 
-        if len(x) == 2:
+        if len(x.strip()) == 2:
             if x in states_short:
                 return x.strip()
             else:
-                return process.extractOne(x.strip(), states_short)[0]
+                match = process.extractOne(x.strip(), states_short)
+                if match[1] > 75:
+                    return match[0]
+                else:
+                    return '?' + x
         else:
             if x in states_long:
                 return x
             else:
-                return process.extractOne(x.strip(), states_short)[0]
-
-
+                match = process.extractOne(x.strip(), states_long)
+                if match[1] > 75:
+                    return match[0]
+                else:
+                    return '?' + x
     states_long = [
         states_dict[key]['name'] for key in states_dict.keys()
         ]
@@ -211,7 +191,7 @@ def clean_states(df, states_dict):
 
     return df
 
-
+# @st.cache
 def clean_counties(df, counties_dict):
     
     def correct_county(x):
@@ -258,15 +238,54 @@ def dates_to_datetime(df):
             return np.datetime64('NaT')
 
 
+def scrape_links(df):
+    """
+    Scrape URLs associated with each incident to confirm location details and
+    extract other keywords.
+
+    Args:
+        df (pd.DataFrame): Merged police shootings DataFrame
+    """
+    nlp = en_core_web_sm.load()
+    # Entity types to add to keywords
+    ents = ['GPE','PERSON','ORG','LOC']
+    
+    keywords = []
+    for articles in df.links:
+        urls = articles.split(' ')
+        kwords = set()
+        for url in urls:
+            
+            if 'http' in url: # skip invalid entries
+                try:    
+                    article = Article(url)
+                    article.download()
+                    article.parse()
+                    article.nlp()
+                    doc = nlp(article.text)
+                    kwords.update(
+                        [
+                            X.text for X in doc.ents if X.label_ in ents
+                            ]
+                        )
+                except:
+                    pass
+            
+        keywords.append(sorted(list(kwords)))
+    df['keywords'] = keywords
+    return df
+
+
 def main():
     """
     [summary]
     """
     states_dict, counties_dict = load_states()
     df = load_data()
+    df = df.reset_index()
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
-    
+    df = scrape_links(df)
     # Reindex columns to desired order
     writecols = _cfg['writecols']
     df = df[writecols]
@@ -282,7 +301,7 @@ def main():
     data = [[str(m) for m in n] for n in df.to_numpy()]
     data.insert(0, list(df.columns.values))
 
-    # gs_write(data, sheet_id, cell_range)
+    gs_write(data, sheet_id, cell_range)
 
     return df
 
