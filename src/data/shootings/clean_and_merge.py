@@ -175,6 +175,8 @@ def clean_states(df, states_dict):
         else:
             if x in states_long:
                 return x
+            elif: all(['washington' in x.lower(), 'd' in x.lower(), 'c' in x.lower()]):
+                return 'District of Columbia'
             else:
                 match = process.extractOne(x.strip(), states_long)
                 if match[1] > 75:
@@ -343,6 +345,7 @@ def main():
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     df = scrape_links(df)
+
     # Reindex columns to desired order
     writecols = _cfg['writecols']
     df = df[writecols]
@@ -357,7 +360,7 @@ def main():
     data = [[str(m) for m in n] for n in df.to_numpy()]
     data.insert(0, list(df.columns.values))
 
-    gs_write(data, sheet_id, cell_range)
+    # gs_write(data, sheet_id, cell_range)
 
     return df
 
