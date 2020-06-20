@@ -322,6 +322,24 @@ def dates_to_datetime(df):
         except:
             return np.datetime64('NaT')
 
+def clean_dates(df):
+    """
+    Convert excel formatted serial dates to python datetime
+    """
+    def convert_xldates(date):
+        try:
+            date = int(date)
+            temp = dt.datetime(1900, 1, 1)
+            delta = dt.timedelta(days=int(date))
+            return temp + delta
+        except ValueError: # nan
+            return 'nan'
+        except OverflowError: # integers that are too high
+            return 'nan'
+
+    print(' --- Cleaning Dates')
+    df['date'] = df['date'].apply(convert_xldates)
+    return df
 
 def scrape_links(df):
     """
@@ -371,6 +389,7 @@ def main(from_csv=False):
     df = clean_col_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
+    df = clean_dates(df)
     # df = scrape_links(df)
 
     # Reindex columns to desired order
@@ -379,6 +398,7 @@ def main(from_csv=False):
 
     # Order dataframe by state/date
     # df['date'] = list(map(pd.to_datetime, df['date']))
+    
     df.sort_values(by=['state','date','county'], inplace=True)
     
     # Write clean, merged data to Google Sheets
