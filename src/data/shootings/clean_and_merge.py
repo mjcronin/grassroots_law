@@ -83,22 +83,22 @@ def load_data(from_csv=False):
     print(' --- Loading Data')
     if from_csv:
         df = pd.read_csv('PK Research Data - ToDate.csv', index_col=None, header=1)
-        df.columns = ['_'.join(c.lower().split()) for c in df.columns]
-        return df
-    files = os.listdir('{}/data/raw'.format(_project_root))
-    df = pd.DataFrame()
+    else:
+        files = os.listdir('{}/data/raw'.format(_project_root))
+        df = pd.DataFrame()
 
-    usecols = _cfg['usecols']
+        usecols = _cfg['usecols']
 
-    for f in files:
-        d = pd.read_csv(
-                    '{}/data/raw/{}'.format(_project_root, f),
-                    header=1,
-                    )
-        df = df.append(
-                d,
-                ignore_index=True
-            )
+        for f in files:
+            d = pd.read_csv(
+                        '{}/data/raw/{}'.format(_project_root, f),
+                        header=1,
+                        )
+            df = df.append(
+                    d,
+                    ignore_index=True
+                )
+    df.columns = ['_'.join(c.lower().split()) for c in df.columns]
     # Drop duplicated 'summary' columns
     is_summary = list(map(lambda x: x=='summary', df.columns.values))
     if np.sum(is_summary) > 1:
@@ -112,7 +112,7 @@ def load_data(from_csv=False):
     # to read the data did not precisely specify the range of cells to read as 
     # this is challenging when using A1 notation and ambiguous ranges. As a 
     # consequence, some empty columns are downloaded.
-    to_drop = [n for n in df.columns.values if 'Unnamed' in n]
+    to_drop = [n for n in df.columns.values if 'unnamed' in n]
     df.drop(labels=to_drop, axis=1, inplace=True) 
     
     # Where there are multiple link columns, merge into one column of URLs 
@@ -130,6 +130,22 @@ def load_data(from_csv=False):
 
     return df
 
+def clean_col_names(df):
+    print(' --- Cleaning Column Names')
+    cols = []
+    for c in df.columns:
+        if c.startswith('alleged_crime'):
+            cols.append('alleged_crime')
+        elif c.startswith('victim_name'):
+            cols.append('victim_name')
+        elif c.startswith('officer_name'):
+            cols.append('officer_name')
+        elif c.startswith('victim_armed'):
+            cols.append('armed_unarmed')
+        else:
+            cols.append(c)
+    df.columns = cols
+    return df
 
 def clean_states(df, states_dict):
     """
@@ -352,6 +368,7 @@ def main(from_csv=False):
     states_dict, counties_dict = load_states()
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
+    df = clean_col_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     # df = scrape_links(df)
