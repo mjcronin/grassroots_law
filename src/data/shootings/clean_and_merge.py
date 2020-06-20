@@ -331,7 +331,7 @@ def clean_dates(df):
             date = int(date)
             temp = dt.datetime(1900, 1, 1)
             delta = dt.timedelta(days=int(date))
-            return temp + delta
+            return (temp + delta).date()
         except ValueError: # nan
             return 'nan'
         except OverflowError: # integers that are too high
@@ -340,6 +340,39 @@ def clean_dates(df):
     print(' --- Cleaning Dates')
     df['date'] = df['date'].apply(convert_xldates)
     return df
+
+def clean_names(df):
+    """
+    Split names into first, last, middle, suffix
+    """
+    def lowercase(name):
+        try:
+            return name.lower()
+        except AttributeError: # 'nan'
+            return 'nan'
+
+    def remove_suffix(name):
+        suffixes = [' jr', ' sr', ' dr', ' iii', ' phd']
+        matches = [x for x in suffixes if x in name]
+        if matches:
+            for s in matches:
+                name = name.replace(s, '')
+            return name, ','.join(matches)
+        else:
+            return name, None
+
+    def remove_middle_name(name):
+        name = name.split()
+        if len(name) < 3:  # only first names or something different
+            return ' '.join(name), None
+        # check for punctuation in name
+
+    print(' --- Cleaning Names')
+    df['victim_name'] = df['victim_name'].apply(lowercase)
+    df['victim_name'], df['victim_suffix'] = zip(*df['victim_name'].apply(remove_suffix))
+    df['victim_name'], df['victim_middle_name'] = zip(*df['vicitm_name'].apply(remove_middle_name))
+    return df
+
 
 def scrape_links(df):
     """
@@ -387,6 +420,7 @@ def main(from_csv=False):
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
     df = clean_col_names(df)
+    df = clean_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     df = clean_dates(df)

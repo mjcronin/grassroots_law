@@ -18,6 +18,7 @@ writecols:
   - county
   - date
   - victim_name
+  - victim_suffix
   - officer_name
   - armed_unarmed
   - cause_of_death
