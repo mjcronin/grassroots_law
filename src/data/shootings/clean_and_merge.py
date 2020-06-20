@@ -26,7 +26,7 @@ with open(_CONFIG_FILE,'r') as f:
 
 sys.path.append(_project_root+'src/')
 
-from data.google_sheets import gs_write
+# from data.google_sheets import gs_write
 
 
 def load_states():
@@ -59,7 +59,7 @@ def load_states():
     return states_dict, counties_dict
 
 
-def load_data():
+def load_data(from_csv=False):
     """
     Import regional police shootings CSVs from local directory
 
@@ -80,7 +80,11 @@ def load_data():
                 Name:'links', dtype: object
                 Name:'summary' dtype: object
     """
-    
+    print(' --- Loading Data')
+    if from_csv:
+        df = pd.read_csv('PK Research Data - ToDate.csv', index_col=None, header=1)
+        df.columns = ['_'.join(c.lower().split()) for c in df.columns]
+        return df
     files = os.listdir('{}/data/raw'.format(_project_root))
     df = pd.DataFrame()
 
@@ -175,7 +179,7 @@ def clean_states(df, states_dict):
         else:
             if x in states_long:
                 return x
-            elif: all(['washington' in x.lower(), 'd' in x.lower(), 'c' in x.lower()]):
+            elif all(['washington' in x.lower(), 'd' in x.lower(), 'c' in x.lower()]):
                 return 'District of Columbia'
             else:
                 match = process.extractOne(x.strip(), states_long)
@@ -222,7 +226,7 @@ def clean_states(df, states_dict):
                 return state[1]
         return 'nan'
 
-    
+    print(' --- Cleaning State Data')
     states_long = [
         states_dict[key]['name'] for key in states_dict.keys()
         ]
@@ -270,15 +274,21 @@ def clean_counties(df, counties_dict):
             return 'nan'
         if state.lower() == 'nan':
             return '?' + county
+        if state.lower() == 'district of columbia':
+            return 'nan'
 
-        counties = counties_dict['state'][state]['counties']['county']
+        try:
+            counties = counties_dict['state'][state]['counties']['county']
+            match = process.extractOne(county, counties)
+            if match[1] < 75:
+                return '?' + county
+            else:
+                return match[0][:-7] # Do not include the word 'county'
 
-        match = process.extractOne(county, counties)
-        if match[1] < 75:
-            return '?' + county
-        else:
-            return match[0][:-7] # Do not include the word 'county'
-    
+        except KeyError:
+            print(f'Missing county entry: State: {state} County: {county}')
+
+    print(' --- Cleaning County Data')
     state_county = [tuple(x) for x in df.loc[:,['state', 'county']].to_numpy()]
     df['county'] = list(map(correct_county, state_county))
 
@@ -335,16 +345,16 @@ def scrape_links(df):
     return df
 
 
-def main():
+def main(from_csv=False):
     """
     Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
     states_dict, counties_dict = load_states()
-    df = load_data()
+    df = load_data(from_csv=from_csv)
     df = df.reset_index()
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
-    df = scrape_links(df)
+    # df = scrape_links(df)
 
     # Reindex columns to desired order
     writecols = _cfg['writecols']
@@ -366,5 +376,5 @@ def main():
 
 
 if __name__ == '__main__':
-    data = main() # Return clean data for local debugging.
+    data = main(from_csv=True) # Return clean data for local debugging.
 
