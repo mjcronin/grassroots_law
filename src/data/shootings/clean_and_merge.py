@@ -394,4 +394,5 @@ def main(from_csv=False):
 
 if __name__ == '__main__':
     data = main(from_csv=True) # Return clean data for local debugging.
+    data.to_csv('cleaned_data.csv')  # update to whatever you need
 
