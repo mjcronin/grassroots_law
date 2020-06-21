@@ -43,10 +43,12 @@ def load_data():
         region_data [dict]: dictionary containing arrays of data pulled from
         the Google Sheets API. Keys are region names as described in config.yml
     """
-
+    # Import dict of metadata for source Google sheets
     sheets = _cfg['google_sheets']
-    region_data = {}
-    for key in sheets.keys():
+    
+    region_data = {} # Dict to collect raw data
+
+    for key in sheets.keys(): # Each key pertains to one regional Google Sheet
 
         sheet = sheets[key]['sheet_id']
         cell_range = sheets[key]['sheet_name']
@@ -57,14 +59,16 @@ def load_data():
         cols =  dat[cols_row]
         n = 1
         for i,col in enumerate(cols):
+            # Create unique names where multiple 'link' cols exist
             if col.lower().strip() == 'link':
                 cols[i] = cols[i].strip() + '_'+str(n)
                 n+=1
+        # Rename cols based on mappings defined in config.yml
         mappings = sheets[key]['col_mappings']
-        print(key)
-        print(cols)
+        
         cols = [mappings[n] for n in cols]
-
+        
+        # Extract data based on sheet metadata and prepend cols row
         data = dat[data_start:]
         data.insert(0,cols)
 

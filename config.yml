@@ -24,6 +24,7 @@ writecols:
   - officer_charged
   - alleged_crime
   - links
+  - keywords
   - summary
 # Merged data GS location
 merged_data:
