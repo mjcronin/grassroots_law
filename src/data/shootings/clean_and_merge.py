@@ -385,7 +385,7 @@ def clean_col(df, col_to_clean):
     df[f'clean_{col_to_clean}'] = df[f'{col_to_clean}'].apply(clean_text)
     return df
 
-def armed_categorizer(df):
+def armed_categorizer(df, col):
     """
     Takes the clean_victim_armed column and categorizes the values into 4 categories:
     1. deadly-weapon
@@ -436,10 +436,10 @@ def armed_categorizer(df):
         else:
             return 'deadly-weapon'
 
-    print(' --- Creating Victim Armed Categories: clean_victim_armed')
-    df['clean_victim_armed'] = df['clean_victim_armed'].apply(pattern_finder)
-    df['clean_victim_armed'] = df['clean_victim_armed'].apply(weapon_type_1)
-    df['clean_victim_armed'] = df['clean_victim_armed'].apply(weapon_type_2)
+    print(f' --- Creating Victim Armed Categories: clean_{col}')
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(pattern_finder)
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_1)
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_2)
     return df
 
 
@@ -447,7 +447,7 @@ def main(from_csv=False):
     """
     Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
-    str_cols = ['victim_armed', 'officer_charged']  # whatever columns we want
+    str_cols = ['armed_unarmed', 'officer_charged']  # whatever columns we want
     states_dict, counties_dict = load_states()
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
@@ -455,8 +455,10 @@ def main(from_csv=False):
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     df = cols_to_str(df, str_cols = str_cols)
-    df = clean_col(df, 'victim_armed')  # could clean other text columns like this, too
-    df = armed_categorizer(df)
+
+    col = 'armed_unarmed'
+    df = clean_col(df, col)  # could clean other text columns like this, too
+    df = armed_categorizer(df, col)
     # df = scrape_links(df)
 
     # Reindex columns to desired order
