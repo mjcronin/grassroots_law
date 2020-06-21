@@ -17,7 +17,11 @@ writecols:
   - state_code
   - county
   - date
+  - original_victim_name
   - victim_name
+  - victim_last_name
+  - victim_middle_name
+  - victim_nickname
   - victim_suffix
   - officer_name
   - armed_unarmed

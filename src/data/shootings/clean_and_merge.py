@@ -10,6 +10,7 @@ from fuzzywuzzy import process
 from newspaper import Article
 import spacy
 import en_core_web_sm
+import re as rere
 
 #
 # Load configuration file specifting data paths and filenames
@@ -343,13 +344,31 @@ def clean_dates(df):
 
 def clean_names(df):
     """
-    Split names into first, last, middle, suffix
+    Split names into first, last, middle, suffix, nickname.
+    Also try to identify if it's a name at all.
     """
+    def is_it_a_name(name):
+        not_names = ['released', 'unknown', 'unnamed', 'not identified', 'not reported' 
+                     ,'not given', 'unidentified', 'nan', 'adult', 'withheld', 'unlisted', 'identified']
+        if any(substring in name for substring in not_names):
+            return 'nan'
+        if len(name.split()) > 10:
+            return 'nan'
+        return name
+
     def lowercase(name):
         try:
             return name.lower()
         except AttributeError: # 'nan'
             return 'nan'
+
+    def remove_nick_name(name):
+        nickname = ''.join(rere.findall(r'"(.*?)"', name))
+        if nickname:
+            name = name.replace(f'"{nickname}"', '')
+            return name, nickname
+        else:
+            return name, None
 
     def remove_suffix(name):
         suffixes = [' jr', ' sr', ' dr', ' iii', ' phd']
@@ -362,15 +381,36 @@ def clean_names(df):
             return name, None
 
     def remove_middle_name(name):
-        name = name.split()
-        if len(name) < 3:  # only first names or something different
-            return ' '.join(name), None
+        split_name = name.split()
+        if len(split_name) < 3:  # only first names or something different
+            return name, None
         # check for punctuation in name
+        elif ',' not in name:
+            return name.replace(split_name[1], ''), split_name[1]
+        elif name.endswith(','):  # comma before suffix
+            return name.replace(split_name[1], ''), split_name[1][:-1]
+        elif name.endswith(',.'):  # comma before suffix
+            return name.replace(split_name[1], ''), split_name[1][:-2]
+        # need to check for last name out of order
+        else:
+            return name, None
+    
+    def split_simple_first_and_last(name):
+        split_name = name.split()
+        if len(split_name) == 2:
+            return split_name[0], split_name[1]
+        else:
+            return name, None
 
     print(' --- Cleaning Names')
     df['victim_name'] = df['victim_name'].apply(lowercase)
+    df['original_victim_name'] = df['victim_name']
+    df['victim_name'] = df['victim_name'].apply(is_it_a_name)
+    df['victim_name'], df['victim_nickname'] = zip(*df['victim_name'].apply(remove_nick_name))
     df['victim_name'], df['victim_suffix'] = zip(*df['victim_name'].apply(remove_suffix))
-    df['victim_name'], df['victim_middle_name'] = zip(*df['vicitm_name'].apply(remove_middle_name))
+    df['victim_name'], df['victim_middle_name'] = zip(*df['victim_name'].apply(remove_middle_name))
+    df['victim_name'], df['victim_last_name'] = zip(*df['victim_name'].apply(split_simple_first_and_last))
+
     return df
 
 
