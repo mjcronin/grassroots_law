@@ -25,10 +25,12 @@ writecols:
   - victim_suffix
   - officer_name
   - armed_unarmed
+  - clean_armed_unarmed
   - cause_of_death
   - officer_charged
   - alleged_crime
   - links
+  # - keywords
   - summary
 # Merged data GS location
 merged_data:

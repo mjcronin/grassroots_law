@@ -1,3 +1,6 @@
+# Data
+*.zip
+
 # MacOS
 .DS_Store
 

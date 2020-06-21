@@ -1,6 +1,7 @@
 import os
 import sys
 import datetime as dt
+import re as rere
 
 import requests as re
 import yaml
@@ -45,7 +46,7 @@ def load_states():
             {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
     """
     project_directory = 'grassroots_law'
-    p_roject_root = os.getcwd()\
+    _project_root = os.getcwd()\
         .split(project_directory)[0]\
         + project_directory + '/'
     
@@ -83,7 +84,7 @@ def load_data(from_csv=False):
     """
     print(' --- Loading Data')
     if from_csv:
-        df = pd.read_csv('PK Research Data - ToDate.csv', index_col=None, header=1)
+        df = pd.read_csv('{}/data/raw/PK Research Data - ToDate.csv'.format(_project_root), index_col=None, header=1)
     else:
         files = os.listdir('{}/data/raw'.format(_project_root))
         df = pd.DataFrame()
@@ -147,6 +148,27 @@ def clean_col_names(df):
             cols.append(c)
     df.columns = cols
     return df
+
+def convert_excel_dates(df):
+    """
+    Convert Excel Serial Dates to datetime64.
+
+    Excel Serial Dates after 01/28/1901 represent the number of days since
+    12/30/1899. 
+    """
+    print(' --- Converting Excel Serial Dates to dt.datetime')
+    def dt_date(x):
+         base_date = dt.datetime(1899, 12, 30)
+         
+         try:
+             return (base_date + dt.timedelta(days=float(x))).date()
+         except:
+             return np.datetime64('NaT')
+
+    df.date = list(map(dt_date, df.date))
+
+    return df
+
 
 def clean_states(df, states_dict):
     """
@@ -347,6 +369,11 @@ def clean_names(df):
     Split names into first, last, middle, suffix, nickname.
     Also try to identify if it's a name at all.
     """
+
+    def remove_punctuation(name):
+        remove = ['.', ',']
+        return ''.join(i for i in name if not i in remove)
+
     def is_it_a_name(name):
         not_names = ['released', 'unknown', 'unnamed', 'not identified', 'not reported' 
                      ,'not given', 'unidentified', 'nan', 'adult', 'withheld', 'unlisted', 'identified']
@@ -366,7 +393,7 @@ def clean_names(df):
         nickname = ''.join(rere.findall(r'"(.*?)"', name))
         if nickname:
             name = name.replace(f'"{nickname}"', '')
-            return name, nickname
+            return name, remove_punctuation(nickname)
         else:
             return name, None
 
@@ -386,11 +413,11 @@ def clean_names(df):
             return name, None
         # check for punctuation in name
         elif ',' not in name:
-            return name.replace(split_name[1], ''), split_name[1]
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
         elif name.endswith(','):  # comma before suffix
-            return name.replace(split_name[1], ''), split_name[1][:-1]
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
         elif name.endswith(',.'):  # comma before suffix
-            return name.replace(split_name[1], ''), split_name[1][:-2]
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1][)
         # need to check for last name out of order
         else:
             return name, None
@@ -398,9 +425,10 @@ def clean_names(df):
     def split_simple_first_and_last(name):
         split_name = name.split()
         if len(split_name) == 2:
-            return split_name[0], split_name[1]
+            return remove_punctuation(split_name[0]), remove_punctuation(split_name[1])
         else:
-            return name, None
+            return remove_punctuation(name), None
+
 
     print(' --- Cleaning Names')
     df['victim_name'] = df['victim_name'].apply(lowercase)
@@ -451,11 +479,93 @@ def scrape_links(df):
     df['keywords'] = keywords
     return df
 
+def cols_to_str(df, str_cols):
+    '''
+    Find all columns in a dataframe that are object dtype and convert to string format. 
+    '''
+    print(' --- Converting {0} columns to strings'.format(str_cols))
+    df[str_cols] = df[str_cols].astype(str)
+    return df
+
+def clean_col(df, col_to_clean):
+    """
+    Function to clean text to keep only letters and remove stopwords
+    Returns a string of the cleaned text and a new column in dataframe called clean_<col_to_clean>
+    """
+    def clean_text(raw_text):
+        letters_only = rere.sub('[^a-zA-Z]', ' ', raw_text)
+        words = letters_only.lower().split()
+        # Combine words into a paragraph again
+        useful_words_string = ' '.join(words)
+        return(useful_words_string)
+    
+    print(' --- Cleaning {0} column'.format(col_to_clean))
+    df[f'clean_{col_to_clean}'] = df[f'{col_to_clean}'].apply(clean_text)
+    return df
+
+def armed_categorizer(df, col):
+    """
+    Takes the clean_victim_armed column and categorizes the values into 4 categories:
+    1. deadly-weapon
+    2. non-deadly-weapon
+    3. unknown
+    4. unarmed
+    """
+        
+    def pattern_finder(col): 
+        """
+        First step in narrowing down if the victim was unarmed, armed with a deadly weapon,
+        armed with a non-deadly weapon, or if the status is unknown/alleged/unclear, etc.
+        This function narrows down the unknown or unarmed statuses and passes the complete text back otherwise. 
+        """
+        armed_result = rere.findall(r'armed|gun|revolver|caliber|yes|rifle|pipe|knife|fire|weapon|hammer|knives|sword|weapon|taser|scissor', col)
+        unknown_result = rere.findall(r'|unknown|allegedly|potential|according|nan|unclear|bat|not |claim|reportedly', col)
+        unarmed_result = rere.findall(r'no|unarmed', col)
+        if armed_result and (not unknown_result or not unarmed_result):
+            return col
+        elif unarmed_result:
+            return 'unarmed'
+        else:
+            return 'unknown'
+
+    def weapon_type_1(col):
+        """
+        Second step to categorize more entries as unknown - if the gun is alleged then it should default to unknown.
+        Find patterns of non-deadly weapons and return those to the armed-non-deadly category.
+        Find patterns in descriptions of why to question the validity of the armed status and pass to unknown category. 
+        """
+        non_deadly = rere.findall(r'bb|fake|toy|plastic|airsoft|soft|pellet|play|taser|replica|rebar|taser|scissor|stun', col)
+        unknown_result = rere.findall(r'unknown|dispute|untrue|alleg|maybe|possibl|unsure|conflict|potential|presum|according|unconfirmed|unclear|bat|not|claim|reportedly', col)
+        if non_deadly:
+            return 'non-deadly-weapon'
+        elif unknown_result:
+            return 'unknown'
+        else:
+            return col
+
+    def weapon_type_2(col):
+        """
+        At this point, we can classify the remaining results into the armed-deadly category. 
+        Edge cases can be QA'd by volunteers. 
+        """
+        non_deadly = rere.findall(r'unarmed|unknown|non-deadly-weapon', col)
+        if non_deadly:
+            return col
+        else:
+            return 'deadly-weapon'
+
+    print(f' --- Creating Victim Armed Categories: clean_{col}')
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(pattern_finder)
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_1)
+    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_2)
+    return df
+
 
 def main(from_csv=False):
     """
     Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
+    str_cols = ['armed_unarmed', 'officer_charged']  # whatever columns we want
     states_dict, counties_dict = load_states()
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
@@ -463,7 +573,14 @@ def main(from_csv=False):
     df = clean_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
-    df = clean_dates(df)
+    df = cols_to_str(df, str_cols = str_cols)
+     
+    # Use if date has been converted to Excel Serial Date in source
+    df = convert_excel_dates(df)
+    
+    col = 'armed_unarmed'
+    df = clean_col(df, col)  # could clean other text columns like this, too
+    df = armed_categorizer(df, col)
     # df = scrape_links(df)
 
     # Reindex columns to desired order
