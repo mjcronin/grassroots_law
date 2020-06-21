@@ -45,7 +45,7 @@ def load_states():
             {'state': {'Alabama': {'abv': 'AL', 'counties': {'county': [Autauga County, ...]}, ...}}
     """
     project_directory = 'grassroots_law'
-    p_roject_root = os.getcwd()\
+    _project_root = os.getcwd()\
         .split(project_directory)[0]\
         + project_directory + '/'
     
@@ -83,7 +83,7 @@ def load_data(from_csv=False):
     """
     print(' --- Loading Data')
     if from_csv:
-        df = pd.read_csv('PK Research Data - ToDate.csv', index_col=None, header=1)
+        df = pd.read_csv('{}/data/raw/PK Research Data - ToDate.csv'.format(_project_root), index_col=None, header=1)
     else:
         files = os.listdir('{}/data/raw'.format(_project_root))
         df = pd.DataFrame()
@@ -147,6 +147,27 @@ def clean_col_names(df):
             cols.append(c)
     df.columns = cols
     return df
+
+def convert_excel_dates(df):
+    """
+    Convert Excel Serial Dates to datetime64.
+
+    Excel Serial Dates after 01/28/1901 represent the number of days since
+    12/30/1899. 
+    """
+    print(' --- Converting Excel Serial Dates to dt.datetime')
+    def dt_date(x):
+         base_date = dt.datetime(1899, 12, 30)
+         
+         try:
+             return (base_date + dt.timedelta(days=float(x))).date()
+         except:
+             return np.datetime64('NaT')
+
+    df.date = list(map(dt_date, df.date))
+
+    return df
+
 
 def clean_states(df, states_dict):
     """
@@ -455,7 +476,10 @@ def main(from_csv=False):
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
     df = cols_to_str(df, str_cols = str_cols)
-
+     
+    # Use if date has been converted to Excel Serial Date in source
+    df = convert_excel_dates(df)
+    
     col = 'armed_unarmed'
     df = clean_col(df, col)  # could clean other text columns like this, too
     df = armed_categorizer(df, col)
