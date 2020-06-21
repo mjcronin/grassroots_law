@@ -1,6 +1,7 @@
 import os
 import sys
 import datetime as dt
+import re as rere
 
 import requests as re
 import yaml
@@ -360,17 +361,102 @@ def scrape_links(df):
     df['keywords'] = keywords
     return df
 
+def cols_to_str(df, str_cols):
+    '''
+    Find all columns in a dataframe that are object dtype and convert to string format. 
+    '''
+    print(' --- Converting {0} columns to strings'.format(str_cols))
+    df[str_cols] = df[str_cols].astype(str)
+    return df
+
+def clean_col(df, col_to_clean):
+    """
+    Function to clean text to keep only letters and remove stopwords
+    Returns a string of the cleaned text and a new column in dataframe called clean_<col_to_clean>
+    """
+    def clean_text(raw_text):
+        letters_only = rere.sub('[^a-zA-Z]', ' ', raw_text)
+        words = letters_only.lower().split()
+        # Combine words into a paragraph again
+        useful_words_string = ' '.join(words)
+        return(useful_words_string)
+    
+    print(' --- Cleaning {0} column'.format(col_to_clean))
+    df[f'clean_{col_to_clean}'] = df[f'{col_to_clean}'].apply(clean_text)
+    return df
+
+def armed_categorizer(df):
+    """
+    Takes the clean_victim_armed column and categorizes the values into 4 categories:
+    1. deadly-weapon
+    2. non-deadly-weapon
+    3. unknown
+    4. unarmed
+    """
+        
+    def pattern_finder(col): 
+        """
+        First step in narrowing down if the victim was unarmed, armed with a deadly weapon,
+        armed with a non-deadly weapon, or if the status is unknown/alleged/unclear, etc.
+        This function narrows down the unknown or unarmed statuses and passes the complete text back otherwise. 
+        """
+        armed_result = rere.findall(r'armed|gun|revolver|caliber|yes|rifle|pipe|knife|fire|weapon|hammer|knives|sword|weapon|taser|scissor', col)
+        unknown_result = rere.findall(r'|unknown|allegedly|potential|according|nan|unclear|bat|not |claim|reportedly', col)
+        unarmed_result = rere.findall(r'no|unarmed', col)
+        if armed_result and (not unknown_result or not unarmed_result):
+            return col
+        elif unarmed_result:
+            return 'unarmed'
+        else:
+            return 'unknown'
+
+    def weapon_type_1(col):
+        """
+        Second step to categorize more entries as unknown - if the gun is alleged then it should default to unknown.
+        Find patterns of non-deadly weapons and return those to the armed-non-deadly category.
+        Find patterns in descriptions of why to question the validity of the armed status and pass to unknown category. 
+        """
+        non_deadly = rere.findall(r'bb|fake|toy|plastic|airsoft|soft|pellet|play|taser|replica|rebar|taser|scissor|stun', col)
+        unknown_result = rere.findall(r'unknown|dispute|untrue|alleg|maybe|possibl|unsure|conflict|potential|presum|according|unconfirmed|unclear|bat|not|claim|reportedly', col)
+        if non_deadly:
+            return 'non-deadly-weapon'
+        elif unknown_result:
+            return 'unknown'
+        else:
+            return col
+
+    def weapon_type_2(col):
+        """
+        At this point, we can classify the remaining results into the armed-deadly category. 
+        Edge cases can be QA'd by volunteers. 
+        """
+        non_deadly = rere.findall(r'unarmed|unknown|non-deadly-weapon', col)
+        if non_deadly:
+            return col
+        else:
+            return 'deadly-weapon'
+
+    print(' --- Creating Victim Armed Categories: clean_victim_armed')
+    df['clean_victim_armed'] = df['clean_victim_armed'].apply(pattern_finder)
+    df['clean_victim_armed'] = df['clean_victim_armed'].apply(weapon_type_1)
+    df['clean_victim_armed'] = df['clean_victim_armed'].apply(weapon_type_2)
+    return df
+
 
 def main(from_csv=False):
     """
     Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
+    str_cols = ['victim_armed', 'officer_charged']  # whatever columns we want
     states_dict, counties_dict = load_states()
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
     df = clean_col_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
+    df = cols_to_str(df, str_cols = str_cols)
+    df = clean_col(df, 'victim_armed')  # could clean other text columns like this, too
+    df = armed_categorizer(df)
     # df = scrape_links(df)
 
     # Reindex columns to desired order
