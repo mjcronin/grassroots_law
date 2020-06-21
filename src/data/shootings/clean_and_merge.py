@@ -83,7 +83,7 @@ def load_data(from_csv=False):
     """
     print(' --- Loading Data')
     if from_csv:
-        df = pd.read_csv('{}/data/raw/PK Research Data - ToDate.csv'.format(_project_root), index_col=None, header=1)
+        df = pd.read_csv('{}data/raw/PK Research Data - ToDate.csv'.format(_project_root), index_col=None, header=1)
     else:
         files = os.listdir('{}/data/raw'.format(_project_root))
         df = pd.DataFrame()
