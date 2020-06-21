@@ -20,6 +20,7 @@ writecols:
   - victim_name
   - officer_name
   - armed_unarmed
+  - clean_armed_unarmed
   - cause_of_death
   - officer_charged
   - alleged_crime
