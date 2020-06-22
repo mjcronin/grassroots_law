@@ -417,7 +417,7 @@ def clean_names(df):
         elif name.endswith(','):  # comma before suffix
             return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
         elif name.endswith(',.'):  # comma before suffix
-            return name.replace(split_name[1], ''), remove_punctuation(split_name[1][)
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
         # need to check for last name out of order
         else:
             return name, None
