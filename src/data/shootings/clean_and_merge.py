@@ -382,19 +382,24 @@ def scrape_links(df):
     df['keywords'] = keywords
     return df
 
-def cols_to_str(df, str_cols):
+def cols_to_str(df, *args):
     '''
     Find all columns in a dataframe that are object dtype and convert to string format. 
+    args = names of columns to convert (use single quotes)
+    Also returns a list of the columns selected so that we can clean them. 
     '''
+    str_cols = list(args)
     print(' --- Converting {0} columns to strings'.format(str_cols))
     df[str_cols] = df[str_cols].astype(str)
     return df
 
-def clean_col(df, col_to_clean):
+def clean_col(df, *args):
     """
     Function to clean text to keep only letters and remove stopwords
-    Returns a string of the cleaned text and a new column in dataframe called clean_<col_to_clean>
+    Returns a string of the cleaned text and a new column (or columns) in dataframe called clean_<col_to_clean>
+    args = names of columns
     """
+    str_cols = list(args)
     def clean_text(raw_text):
         letters_only = rere.sub('[^a-zA-Z]', ' ', raw_text)
         words = letters_only.lower().split()
@@ -402,13 +407,14 @@ def clean_col(df, col_to_clean):
         useful_words_string = ' '.join(words)
         return(useful_words_string)
     
-    print(' --- Cleaning {0} column'.format(col_to_clean))
-    df[f'clean_{col_to_clean}'] = df[f'{col_to_clean}'].apply(clean_text)
+    for i in str_cols:
+        print(' --- Cleaning {0} column'.format(i))
+        df[f'clean_{i}'] = df[f'{i}'].apply(clean_text)
     return df
 
 def armed_categorizer(df, col):
     """
-    Takes the clean_victim_armed column and categorizes the values into 4 categories:
+    Takes the clean_armed_unarmed column and categorizes the values into 4 categories:
     1. deadly-weapon
     2. non-deadly-weapon
     3. unknown
@@ -457,33 +463,104 @@ def armed_categorizer(df, col):
         else:
             return 'deadly-weapon'
 
-    print(f' --- Creating Victim Armed Categories: clean_{col}')
-    df[f'clean_{col}'] = df[f'clean_{col}'].apply(pattern_finder)
-    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_1)
-    df[f'clean_{col}'] = df[f'clean_{col}'].apply(weapon_type_2)
+    print(' --- Creating Victim Armed Categories: clean_victim_armed')
+    df['{0}'.format(col)] = df['{0}'.format(col)].apply(pattern_finder)
+    df['{0}'.format(col)] = df['{0}'.format(col)].apply(weapon_type_1)
+    df['{0}'.format(col)] = df['{0}'.format(col)].apply(weapon_type_2)
     return df
 
+def cod_func(df, col):
+    
+    def death_cats(col):
+        """
+        Cause of death function cleans the clean_cause_of_death column and returns the entire dataframe. 
+
+        """
+        gun = rere.findall(r'gun|shot|pistol|mm|firearm|shoot', col)
+        hypoxia = rere.findall(r'hypoxia|choke|suffocat|strangl|asphyx|restrain|hang|chain|drown', col)
+        car = rere.findall(r'car|vehicl|crash',col)
+        tased_maced = rere.findall(r'tase|mace|pepper|gas|chemical', col)
+        assault = rere.findall(r'beat|assault|fracture',col)
+        custody = rere.findall(r'custody|medical|distress|critical|suicide', col)
+        unknown = rere.findall(r'unknown|nan|unclear|undetermined|no information|not released|undertermined|pending autopsy result', col)
+        stabbed = rere.findall(r'knife|knive|sharp|machete', col)
+        alive = rere.findall(r'alive|not killed|not dead|not deceased|injur', col)
+        if gun:
+            return 'gunshot'
+        elif hypoxia:
+            return 'hypoxia'
+        elif custody:
+            return 'in police custody'
+        elif alive:
+            return 'alive'
+        elif stabbed:
+            return 'beaten or stabbed'
+        elif tased_maced:
+            return 'taser or chemical agents'
+        elif car:
+            return 'vehicle'
+        elif assault:
+            return 'beaten or stabbed'
+        elif unknown:
+            return 'unknown or pending autopsy'
+        else:
+            return 'other'
+        
+    print(' --- Categorizing causes of death from clean_cause_of_death column')
+    df[col] = df[col].apply(death_cats)
+    return df
+
+def officer_status(df, col):
+    
+    def cop_cats(col):
+        """
+        Cause of death function cleans the clean_cause_of_death column and returns the entire dataframe. 
+
+        """
+        no = rere.findall(r'no|cleared|dismiss', col)
+        yes = rere.findall(r'yes|charged|fired|terminat', col)
+        admin_leave = rere.findall(r'admin|leave|suspend',col)
+        pending = rere.findall(r'pending|investi|review',col)
+        unknown = rere.findall(r'unknown|unklnown|undisclosed|nan|unclear',col)
+        if admin_leave:
+            return 'administrative leave'
+        elif pending:
+            return 'pending investigation'
+        elif unknown:
+            return 'unknown'
+        elif yes:
+            return 'yes'
+        elif no:
+            return 'no'
+        else:
+            return 'other'
+        
+    print(' --- Categorizing if officer was charged in murder')
+    df[col] = df[col].apply(cop_cats)
+    return df
 
 def main(from_csv=False):
     """
     Load, merge, and clean the regional shootings data. Write to Google Sheets.
     """
-    str_cols = ['armed_unarmed', 'officer_charged']  # whatever columns we want
     states_dict, counties_dict = load_states()
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
     df = clean_col_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
-    df = cols_to_str(df, str_cols = str_cols)
-     
+
     # Use if date has been converted to Excel Serial Date in source
     df = convert_excel_dates(df)
     
-    col = 'armed_unarmed'
-    df = clean_col(df, col)  # could clean other text columns like this, too
-    df = armed_categorizer(df, col)
     # df = scrape_links(df)
+
+    # clean and categorize text columns
+    df = cols_to_str(df, 'armed_unarmed', 'cause_of_death', 'officer_charged')
+    df = clean_col(df, 'armed_unarmed', 'cause_of_death', 'officer_charged')
+    df = armed_categorizer(df, 'clean_armed_unarmed')
+    df = cod_func(df, 'clean_cause_of_death')
+    df = officer_status(df, 'clean_officer_charged')
 
     # Reindex columns to desired order
     writecols = _cfg['writecols']
