@@ -11,6 +11,7 @@ from fuzzywuzzy import process
 from newspaper import Article
 import spacy
 import en_core_web_sm
+import re as rere
 
 #
 # Load configuration file specifting data paths and filenames
@@ -344,6 +345,102 @@ def dates_to_datetime(df):
         except:
             return np.datetime64('NaT')
 
+def clean_dates(df):
+    """
+    Convert excel formatted serial dates to python datetime
+    """
+    def convert_xldates(date):
+        try:
+            date = int(date)
+            temp = dt.datetime(1900, 1, 1)
+            delta = dt.timedelta(days=int(date))
+            return (temp + delta).date()
+        except ValueError: # nan
+            return 'nan'
+        except OverflowError: # integers that are too high
+            return 'nan'
+
+    print(' --- Cleaning Dates')
+    df['date'] = df['date'].apply(convert_xldates)
+    return df
+
+def clean_names(df):
+    """
+    Split names into first, last, middle, suffix, nickname.
+    Also try to identify if it's a name at all.
+    """
+
+    def remove_punctuation(name):
+        remove = ['.', ',']
+        return ''.join(i for i in name if not i in remove)
+
+    def is_it_a_name(name):
+        not_names = ['released', 'unknown', 'unnamed', 'not identified', 'not reported' 
+                     ,'not given', 'unidentified', 'nan', 'adult', 'withheld', 'unlisted', 'identified']
+        if any(substring in name for substring in not_names):
+            return 'nan'
+        if len(name.split()) > 10:
+            return 'nan'
+        return name
+
+    def lowercase(name):
+        try:
+            return name.lower()
+        except AttributeError: # 'nan'
+            return 'nan'
+
+    def remove_nick_name(name):
+        nickname = ''.join(rere.findall(r'"(.*?)"', name))
+        if nickname:
+            name = name.replace(f'"{nickname}"', '')
+            return name, remove_punctuation(nickname)
+        else:
+            return name, None
+
+    def remove_suffix(name):
+        suffixes = [' jr', ' sr', ' dr', ' iii', ' phd']
+        matches = [x for x in suffixes if x in name]
+        if matches:
+            for s in matches:
+                name = name.replace(s, '')
+            return name, ','.join(matches)
+        else:
+            return name, None
+
+    def remove_middle_name(name):
+        split_name = name.split()
+        if len(split_name) < 3:  # only first names or something different
+            return name, None
+        # check for punctuation in name
+        elif ',' not in name:
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
+        elif name.endswith(','):  # comma before suffix
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
+        elif name.endswith(',.'):  # comma before suffix
+            return name.replace(split_name[1], ''), remove_punctuation(split_name[1])
+        # need to check for last name out of order
+        else:
+            return name, None
+    
+    def split_simple_first_and_last(name):
+        split_name = name.split()
+        if len(split_name) == 2:
+            return remove_punctuation(split_name[0]), remove_punctuation(split_name[1])
+        else:
+            return remove_punctuation(name), None
+
+
+    print(' --- Cleaning Names')
+    df['victim_name'] = df['victim_name'].apply(lowercase)
+    df['original_victim_name'] = df['victim_name']
+    df['victim_name'] = df['victim_name'].apply(is_it_a_name)
+    df['victim_name'], df['victim_nickname'] = zip(*df['victim_name'].apply(remove_nick_name))
+    df['victim_name'], df['victim_suffix'] = zip(*df['victim_name'].apply(remove_suffix))
+    df['victim_name'], df['victim_middle_name'] = zip(*df['victim_name'].apply(remove_middle_name))
+    df['victim_name'], df['victim_last_name'] = zip(*df['victim_name'].apply(split_simple_first_and_last))
+
+    return df
+
 
 def scrape_links(df):
     """
@@ -547,6 +644,7 @@ def main(from_csv=False):
     df = load_data(from_csv=from_csv)
     df = df.reset_index()
     df = clean_col_names(df)
+    df = clean_names(df)
     df = clean_states(df, states_dict)
     df = clean_counties(df, counties_dict)
 
@@ -568,6 +666,7 @@ def main(from_csv=False):
 
     # Order dataframe by state/date
     # df['date'] = list(map(pd.to_datetime, df['date']))
+    
     df.sort_values(by=['state','date','county'], inplace=True)
     
     # Write clean, merged data to Google Sheets
